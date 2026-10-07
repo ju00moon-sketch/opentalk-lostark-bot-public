@@ -1,0 +1,14 @@
+{
+  "requestMessages": 2,
+  "requestChars": 2600,
+  "roomIntervalMs": 2000,
+  "userIntervalMs": 3000,
+  "repeatIntervalMs": 15000,
+  "windowMs": 60000,
+  "roomMessages": 12,
+  "roomChars": 9000,
+  "userMessages": 6,
+  "userChars": 4500,
+  "attemptTtlMs": 86400000,
+  "attemptLimit": 2048
+}

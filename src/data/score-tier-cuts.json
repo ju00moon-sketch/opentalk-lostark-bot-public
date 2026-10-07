@@ -1,0 +1,15 @@
+{
+  "version": "2026-09-17.1",
+  "tiers": [
+    { "key": "iron", "name": "아이언", "rank": 1, "percentCut": null, "fixedMinimum": 0 },
+    { "key": "bronze", "name": "브론즈", "rank": 2, "percentCut": 90, "fixedMinimum": 800 },
+    { "key": "silver", "name": "실버", "rank": 3, "percentCut": 70, "fixedMinimum": 1500 },
+    { "key": "gold", "name": "골드", "rank": 4, "percentCut": 45, "fixedMinimum": 2300 },
+    { "key": "platinum", "name": "플래티넘", "rank": 5, "percentCut": 25, "fixedMinimum": 3300 },
+    { "key": "diamond", "name": "다이아몬드", "rank": 6, "percentCut": 12, "fixedMinimum": 4300 },
+    { "key": "master", "name": "마스터", "rank": 7, "percentCut": 5, "fixedMinimum": 5600 },
+    { "key": "grandmaster", "name": "그랜드마스터", "rank": 8, "percentCut": 1.5, "fixedMinimum": 7400 },
+    { "key": "challenger", "name": "챌린저", "rank": 9, "percentCut": 0.5, "fixedMinimum": 8000 },
+    { "key": "esther", "name": "에스더", "rank": 10, "percentCut": 0.1, "fixedMinimum": 8800 }
+  ]
+}

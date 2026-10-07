@@ -1,0 +1,154 @@
+// 로스트아크 오픈 API 공용 모듈.
+// 나중에 카카오톡 봇 등 다른 프론트엔드를 붙일 때도 이 모듈을 그대로 재사용한다.
+import { memoTtl } from './memo-ttl.js';
+
+const BASE_URL = 'https://developer-lostark.game.onstove.com';
+
+async function request(path, body, { signal } = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: body ? 'POST' : 'GET',
+    headers: {
+      accept: 'application/json',
+      authorization: `bearer ${process.env.LOSTARK_API_KEY}`,
+      ...(body ? { 'content-type': 'application/json' } : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
+    signal,
+  });
+  if (res.status === 429) {
+    throw apiError('API 요청 한도(분당 100회)를 초과했어요. 잠시 후 다시 시도해 주세요.', res.status);
+  }
+  if (!res.ok) {
+    throw apiError(`로스트아크 API 오류 (HTTP ${res.status})`, res.status);
+  }
+  return res.json();
+}
+
+// 호출한 쪽이 "잠시 후 다시"와 "잘못된 입력"을 가를 수 있게 상태 코드를 붙인다.
+// 429·5xx는 일시적(transient) — 재시도 대상. 4xx는 요청 자체의 문제(닉네임에 못 쓰는 문자 등).
+function apiError(message, status) {
+  const err = new Error(message);
+  err.status = status;
+  err.transient = status === 429 || status >= 500;
+  return err;
+}
+
+// fetch 자체가 실패한 경우(네트워크·타임아웃)도 일시적 오류로 본다.
+export const isTransientError = (err) => err?.transient === true || err?.status === undefined;
+
+// 캐릭터 기본 프로필. 존재하지 않거나 비공개면 null.
+export function getCharacterProfile(characterName) {
+  return request(`/armories/characters/${encodeURIComponent(characterName)}/profiles`);
+}
+
+// 프로필+장비+각인+보석+카드 통합 조회. 존재하지 않거나 비공개면 null.
+export function getArmory(characterName) {
+  const filters = encodeURIComponent('profiles+equipment+engravings+gems+cards');
+  return request(`/armories/characters/${encodeURIComponent(characterName)}?filters=${filters}`);
+}
+
+// 전투정보실 전체 조회 (모든 섹션 포함 — /스킬코드처럼 여러 섹션이 필요할 때).
+export function getFullArmory(characterName) {
+  return request(`/armories/characters/${encodeURIComponent(characterName)}`);
+}
+
+// 전투정보실 개별 항목 조회 (equipment, combat-skills, arkpassive, avatars, collectibles, gems, arkgrid).
+export function getArmoryPart(characterName, part, options) {
+  return request(`/armories/characters/${encodeURIComponent(characterName)}/${part}`, undefined, options);
+}
+
+// 같은 계정(원정대)의 캐릭터 목록. 조회 불가면 빈 배열.
+export function getSiblings(characterName, options) {
+  return request(`/characters/${encodeURIComponent(characterName)}/siblings`, undefined, options);
+}
+
+// 주간 콘텐츠 캘린더 (모험 섬 포함).
+export function getCalendar() {
+  return request('/gamecontents/calendar');
+}
+
+// 거래소 카테고리 목록.
+export function getMarketOptions() {
+  return request('/markets/options');
+}
+
+// 거래소 아이템 검색 (부분 일치 지원). opts: { grade: '유물', order: 'DESC', page: 2 }
+// 한 쪽에 10개씩 오고 응답의 TotalCount/PageSize로 다음 쪽이 있는지 알 수 있다.
+export function searchMarketItems(categoryCode, itemName, opts = {}) {
+  return request('/markets/items', {
+    Sort: 'CURRENT_MIN_PRICE',
+    CategoryCode: categoryCode,
+    ItemName: itemName,
+    ItemGrade: opts.grade ?? null,
+    PageNo: opts.page ?? 1,
+    SortCondition: opts.order ?? 'ASC',
+  });
+}
+
+// 공지·이벤트 목록은 자주 바뀌지 않는데 명령마다 API 왕복(0.2~0.3초)을 기다리고 있었다.
+// 성공한 목록을 60초만 기억해 연달아 묻는 요청은 바로 답하고(업데이트 자동 확인은 3분 주기라 영향 없음),
+// 실패는 기억하지 않아 점검 중 5xx는 다음 호출이 다시 시도한다.
+const NEWS_CACHE_MS = 60_000;
+
+// 진행 중인 이벤트 목록.
+export const getEvents = memoTtl(() => request('/news/events'), NEWS_CACHE_MS);
+
+// 공식 공지사항 목록.
+export const getNotices = memoTtl(() => request('/news/notices'), NEWS_CACHE_MS);
+
+// 경매장 악세서리 검색. etcOptions: [{ second, min, max }] — 연마 효과 코드와 수치.
+// MinValue만 주면 필터가 걸리지 않아서 MaxValue까지 같이 보내야 한다.
+export function searchAccessories({ category, etcOptions, quality, grade = '고대', tier = 4 }) {
+  return request('/auctions/items', {
+    ItemLevelMin: 0,
+    ItemLevelMax: 0,
+    ItemGradeQuality: quality,
+    EtcOptions: etcOptions.map((o) => ({
+      FirstOption: 7,
+      SecondOption: o.second,
+      MinValue: o.min,
+      MaxValue: o.max,
+    })),
+    Sort: 'BUY_PRICE',
+    CategoryCode: category,
+    CharacterClass: '',
+    ItemTier: tier,
+    ItemGrade: grade,
+    ItemName: '',
+    PageNo: 1,
+    SortCondition: 'ASC',
+  });
+}
+
+// 경매장 팔찌 검색 — etcOptions는 API 형식 그대로({ FirstOption, SecondOption, MinValue, MaxValue }). 고대 4티어, 즉시 구매가 오름차순 1쪽.
+export function searchBraceletAuction(etcOptions) {
+  return request('/auctions/items', {
+    ItemLevelMin: 0,
+    ItemLevelMax: 0,
+    ItemGradeQuality: null,
+    EtcOptions: etcOptions,
+    Sort: 'BUY_PRICE',
+    CategoryCode: 200040,
+    CharacterClass: '',
+    ItemTier: 4,
+    ItemGrade: '고대',
+    ItemName: '',
+    PageNo: 1,
+    SortCondition: 'ASC',
+  });
+}
+
+// 경매장 검색 (보석 등).
+export function searchAuctionItems(categoryCode, itemName) {
+  return request('/auctions/items', {
+    ItemLevelMin: 0,
+    ItemLevelMax: 0,
+    ItemGradeQuality: null,
+    Sort: 'BUY_PRICE',
+    CategoryCode: categoryCode,
+    ItemTier: null,
+    ItemName: itemName,
+    PageNo: 1,
+    SortCondition: 'ASC',
+  });
+}

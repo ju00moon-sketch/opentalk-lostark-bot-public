@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111d">
+  <title>시장 도구 — 포근해용</title>
+  <meta name="description" content="로스트아크 거래소 시세와 보석 경매장 검색, 관심 아이템, 분배금 계산기와 장비 강화(재련) 비용 계산기.">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="renewal.css">
+  <link rel="stylesheet" href="tools.css">
+<link rel="stylesheet" href="honing.css">
+  <script src="renewal.js" defer></script>
+  <script src="auth.js" defer></script>
+  <script src="honing.js" defer></script>
+<script src="tools.js" defer></script>
+</head>
+<body class="renewal-page tools-page">
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <header data-site-header data-active="tools"></header>
+  <main id="main-content" class="tools-shell" tabindex="-1" data-site-feature="market" data-site-access="locked" data-tools-view="market">
+    <section class="tools-hero" aria-labelledby="tools-title">
+      <p class="tools-eyebrow">MARKET &amp; TOOLS</p>
+      <h1 id="tools-title">시장·도구</h1>
+      <nav class="tools-nav" aria-label="시장 도구">
+        <button type="button" data-market-kind="market" aria-pressed="true">거래소 시세</button>
+        <button type="button" data-market-kind="gems" aria-pressed="false">보석 경매장</button>
+        <a href="#bid-calculator" data-tools-tab="bid">분배금 계산기</a>
+        <a href="#honing" data-tools-tab="honing">장비 강화</a>
+      </nav>
+    </section>
+    <div class="market-layout">
+      <div class="market-main">
+        <section class="market-panel market-search" aria-label="아이템 검색">
+          <form id="market-search-form">
+            <label class="visually-hidden" for="market-query">아이템 이름</label>
+            <div class="market-query-wrap"><span aria-hidden="true">⌕</span><input id="market-query" name="q" type="search" maxlength="60" placeholder="아이템 이름 검색" autocomplete="off"></div>
+            <label class="visually-hidden" for="market-category">거래소 분류</label>
+            <select id="market-category" name="category"><option value="50010">재련 재료</option><option value="40000">각인서</option><option value="60200">배틀 아이템 -회복형</option></select>
+            <button type="submit" class="market-primary">검색</button>
+          </form>
+          <div class="market-shortcuts" id="market-shortcuts" aria-label="빠른 검색">
+            <button type="button" data-search="운명의">재련 재료</button><button type="button" data-search="각인서">각인서</button><button type="button" data-search="융화">융화 재료</button><button type="button" data-search="회복약">회복약</button>
+          </div>
+          <p id="market-hint" class="market-caption">거래소 가격은 묶음 단위로 표시합니다.</p>
+        </section>
+        <section class="market-panel market-results" aria-labelledby="market-results-title">
+          <div class="market-section-head">
+            <div><h2 id="market-results-title">거래소 시세</h2><p id="market-result-count" class="market-caption">원하는 아이템을 검색해 보세요.</p></div>
+            <div class="market-result-tools">
+              <label class="visually-hidden" for="market-sort">정렬</label>
+              <select id="market-sort"><option value="CURRENT_MIN_PRICE:ASC">최저가 낮은 순</option><option value="CURRENT_MIN_PRICE:DESC">최저가 높은 순</option><option value="YDAY_AVG_PRICE:DESC">전일 평균가 높은 순</option><option value="RECENT_PRICE:DESC">최근 거래가 높은 순</option></select>
+              <div class="market-view" role="group" aria-label="결과 보기 방식"><button type="button" data-market-view="cards" aria-pressed="true" aria-label="카드형 보기">▦</button><button type="button" data-market-view="list" aria-pressed="false" aria-label="목록형 보기">☷</button></div>
+              <button id="market-refresh" type="button" class="market-icon-button" aria-label="현재 검색 새로고침" title="새로고침">↻</button>
+            </div>
+          </div>
+          <p id="market-status" role="status" aria-live="polite" class="market-status"></p>
+          <div id="market-results" class="market-items" data-view="cards"></div>
+          <div id="market-pagination" class="market-pagination" hidden><button id="market-prev" type="button">이전</button><span id="market-page"></span><button id="market-next" type="button">다음</button></div>
+          <p id="market-updated" class="market-caption market-updated"></p>
+        </section>
+        <section id="market-history" class="market-panel" aria-labelledby="market-history-title" hidden>
+          <div class="market-section-head"><div><p class="tools-eyebrow">PRICE HISTORY</p><h2 id="market-history-title">가격 추이</h2></div><button type="button" id="market-history-close" aria-label="가격 추이 닫기" class="market-icon-button">×</button></div>
+          <div id="market-history-content"></div>
+        </section>
+        <section id="bid-calculator" class="market-panel bid-panel" aria-labelledby="bid-title">
+          <div class="market-section-head"><div><p class="tools-eyebrow">AUCTION CALCULATOR</p><h2 id="bid-title">분배금 계산기</h2></div><span class="market-caption">거래소 판매 수수료 5%</span></div>
+          <form id="bid-form">
+            <label for="bid-price">아이템 시세 <span class="bid-price-wrap"><input id="bid-price" type="number" min="1" max="1000000000" step="1" inputmode="numeric" placeholder="예: 8800" required><span>G</span></span></label>
+            <label for="bid-party">공격대 인원<select id="bid-party"><option value="4">4인</option><option value="8">8인</option><option value="16">16인</option></select></label>
+            <button type="submit" class="market-primary">계산하기</button>
+          </form>
+          <p id="bid-source" class="market-caption" hidden></p>
+          <p id="bid-status" class="market-status" role="status" aria-live="polite"></p>
+          <div id="bid-result" class="bid-result" hidden></div>
+          <p class="market-caption">추천 입찰가는 균등 분배가보다 여유 있게, 재판매 상한은 원금을 회수하는 기준으로 계산합니다.</p>
+        </section>
+        <section id="honing-calculator" class="market-panel honing-panel" aria-labelledby="honing-title">
+          <div class="market-section-head"><div><p class="tools-eyebrow">HONING CALCULATOR</p><h2 id="honing-title">장비 강화 · 재련 최저 비용</h2></div><span class="market-caption">숨결·책을 어떻게 넣는 게 가장 싼지</span></div>
+          <form id="honing-form">
+            <label for="honing-kind">부위<select id="honing-kind"><option value="weapon">무기</option><option value="armor">방어구</option></select></label>
+            <label for="honing-from">현재 단계<input id="honing-from" type="number" min="0" max="24" step="1" inputmode="numeric" value="18" required></label>
+            <label for="honing-to">목표 단계<input id="honing-to" type="number" min="1" max="25" step="1" inputmode="numeric" value="20" required></label>
+            <button type="submit" class="market-primary">계산하기</button>
+          </form>
+          <p id="honing-status" class="market-status" role="status" aria-live="polite"></p>
+          <div id="honing-result" class="honing-result" hidden></div>
+          <p class="market-caption">거래소 최저가로 계산한 기대 비용입니다. 실링과 귀속 재료는 빼고, 장인의 기운이 차서 확정 성공하는 것까지 넣어 계산합니다.</p>
+        </section>
+      </div>
+      <aside class="market-sidebar" aria-label="관심 아이템과 이용 안내">
+        <section class="market-panel favorites-panel" aria-labelledby="favorites-title">
+          <div class="market-section-head"><h2 id="favorites-title">관심 아이템</h2><span id="favorites-count" class="market-count">0</span></div>
+          <div id="market-favorites"></div>
+          <p id="favorites-storage-note" class="market-caption">별표로 담은 아이템을 이 브라우저에 보관합니다.</p>
+        </section>
+        <section class="market-panel market-tip" aria-labelledby="market-info-title">
+          <p class="tools-eyebrow">GOOD TO KNOW</p><h2 id="market-info-title">가격을 읽는 법</h2>
+          <dl><div><dt>현재 최저가</dt><dd>지금 등록된 아이템의 최저 판매가</dd></div><div><dt>전일 평균가</dt><dd>어제 거래된 아이템의 평균 가격</dd></div><div><dt>변동률</dt><dd>전일 평균가 대비 현재 최저가의 차이</dd></div></dl>
+          <p class="market-caption">가격은 조회 시점 기준이며 최대 5분 간격으로 갱신됩니다. 실제 거래 전 게임에서 확인해 주세요.</p>
+        </section>
+        <a class="market-command-link" href="index.html#commands"><span>채팅에서도 간편하게</span><strong>.경매장 10겁</strong><span>봇 명령어 안내 <b aria-hidden="true">›</b></span></a>
+      </aside>
+    </div>
+    <noscript><p class="market-status">시세를 검색하려면 브라우저에서 JavaScript를 사용할 수 있어야 합니다.</p></noscript>
+  </main>
+  <footer class="realm-footer"><a class="realm-brand" href="index.html">포근해용</a><div><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="index.html#commands">명령어 안내</a></div></footer>
+</body>
+</html>

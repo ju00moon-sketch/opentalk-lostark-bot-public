@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08111d">
+<meta name="description" content="로스트아크 캐릭터의 장비, 치명타 적중률과 원정대 현황을 포근해용에서 확인하세요.">
+<title>캐릭터 스펙 — 포근해용</title>
+<script src="theme.js"></script>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="renewal.css">
+<link rel="stylesheet" href="spec.css">
+<link rel="stylesheet" href="spec-dossier.css">
+<link rel="stylesheet" href="spec-value.css">
+<link rel="stylesheet" href="spec-specup.css">
+<link rel="stylesheet" href="spec-realm.css">
+<script src="renewal.js" defer></script>
+<script src="auth.js" defer></script>
+<script src="spec-value.js" defer></script>
+<script src="spec-specup.js" defer></script>
+<script src="spec.js" defer></script>
+</head>
+<body class="spec-page">
+<a class="skip-link" href="#main-content">본문 바로가기</a>
+<header data-site-header data-active="spec"></header>
+<main class="spec-layout" id="main-content">
+  <section class="spec-search" aria-labelledby="search-title">
+    <div class="spec-search-heading"><p class="spec-eyebrow">CHARACTER</p><h1 id="search-title">캐릭터 검색</h1></div>
+    <form id="spec-form" class="spec-form">
+      <label for="spec-name" class="spec-visually-hidden">캐릭터명</label>
+      <div class="spec-search-row"><svg class="spec-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="spec-name" name="characterName" type="text" maxlength="12" required autocomplete="off" spellcheck="false" placeholder="캐릭터명을 입력하세요" aria-describedby="search-help"><button class="spec-primary" type="submit" id="spec-submit">검색</button></div>
+      <p id="search-help" class="spec-visually-hidden">캐릭터명은 한글·영문·숫자 2~12자로 입력해 주세요.</p>
+    </form>
+    <div id="spec-personal" class="spec-personal" hidden><button id="spec-representative" type="button" class="spec-action" hidden>내 대표 캐릭터 조회</button><a href="account.html">대표 캐릭터 설정</a></div>
+    <div class="spec-saved-searches"><details id="spec-recent" class="spec-recent" hidden><summary>최근 조회</summary><div id="spec-recent-list"></div></details><details id="spec-favorites" class="spec-recent" hidden><summary>즐겨찾기</summary><div id="spec-favorite-list"></div><p>이 브라우저에 저장됩니다.</p></details></div>
+  </section>
+  <p id="spec-status" class="spec-status spec-visually-hidden" role="status" aria-live="polite" aria-atomic="true">캐릭터명을 입력하면 스펙 정보를 보여드려요.</p>
+  <div id="spec-empty-guide" hidden></div>
+  <div id="spec-results" class="spec-dashboard" hidden>
+    <div id="spec-snapshot-notice" class="spec-snapshot-notice" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+    <section id="spec-profile" class="spec-profile" aria-labelledby="result-title">
+      <div id="profile-class-mark" class="spec-profile-class-mark" aria-hidden="true"></div>
+      <div id="profile-portrait" class="spec-portrait" aria-hidden="true"></div>
+      <div class="spec-profile-identity">
+        <div class="spec-profile-heading"><p id="profile-title" class="spec-profile-title"></p><div class="spec-profile-name"><h2 id="result-title" tabindex="-1"></h2></div><p id="profile-context" class="spec-profile-context"></p></div>
+        <div class="spec-profile-metrics"><dl id="profile-item-level" class="spec-profile-item-level"></dl><dl id="profile-stats" class="spec-profile-stats"></dl></div>
+        <div id="profile-score-method" class="spec-score-method"></div>
+        <div class="spec-profile-bottom"><details class="spec-profile-more"><summary>프로필 상세</summary><dl id="profile-meta" class="spec-profile-meta"></dl></details><div class="spec-profile-actions"><button id="spec-bookmark" class="spec-action" type="button" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"></path></svg><span>즐겨찾기</span></button><button id="spec-share" class="spec-action" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M5 12v8h14v-8"></path></svg>공유</button></div></div>
+        <p id="spec-action-status" class="spec-action-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div id="spec-share-fallback" class="spec-share-fallback" hidden><label for="spec-share-url">공유 주소</label><input id="spec-share-url" type="text" readonly></div>
+      </div>
+      <aside class="spec-hero-tier" aria-labelledby="profile-tier-title"><h2 id="profile-tier-title" class="spec-visually-hidden">환산 점수 티어</h2><div id="profile-tier" class="spec-hero-tier-body"></div></aside>
+    </section>
+    <div class="spec-main">
+    <div class="spec-tabs" role="tablist" aria-label="캐릭터 스펙 분류">
+      <button type="button" id="tab-summary" role="tab" aria-controls="panel-summary" aria-selected="true" tabindex="0" data-tab="summary">종합 정보</button>
+      <button type="button" id="tab-equipment" role="tab" aria-controls="panel-equipment" aria-selected="false" tabindex="-1" data-tab="equipment">장비</button>
+      <button type="button" id="tab-engravings" role="tab" aria-controls="panel-engravings" aria-selected="false" tabindex="-1" data-tab="engravings">각인</button>
+      <button type="button" id="tab-build" role="tab" aria-controls="panel-build" aria-selected="false" tabindex="-1" data-tab="build">보석</button>
+      <button type="button" id="tab-cards" role="tab" aria-controls="panel-cards" aria-selected="false" tabindex="-1" data-tab="cards">카드</button>
+      <button type="button" id="tab-arkpassive" role="tab" aria-controls="panel-arkpassive" aria-selected="false" tabindex="-1" data-tab="arkpassive">아크패시브</button>
+      <button type="button" id="tab-arkgrid" role="tab" aria-controls="panel-arkgrid" aria-selected="false" tabindex="-1" data-tab="arkgrid">아크그리드</button>
+      <button type="button" id="tab-crit" role="tab" aria-controls="panel-crit" aria-selected="false" tabindex="-1" data-tab="crit">치적</button>
+      <button type="button" id="tab-specup" role="tab" aria-controls="panel-specup" aria-selected="false" tabindex="-1" data-tab="specup">스펙업</button>
+      <button type="button" id="tab-roster" role="tab" aria-controls="panel-roster" aria-selected="false" tabindex="-1" data-tab="roster">원정대</button>
+      <button type="button" id="tab-valuation" role="tab" aria-controls="panel-valuation" aria-selected="false" tabindex="-1" data-tab="valuation">환산 가치</button>
+    </div>
+    <section id="panel-summary" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-summary" tabindex="0">
+      <h2 class="spec-visually-hidden">세팅 한눈에 보기</h2>
+      <div id="spec-summary" class="spec-summary-grid"></div>
+    </section>
+    <section id="panel-equipment" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-equipment" tabindex="0" hidden>
+      <h2 class="spec-visually-hidden">장비와 악세서리</h2>
+      <div class="spec-grid spec-equipment-grid">
+      <section class="spec-card" id="card-equipment" aria-labelledby="equipment-title"><div class="spec-card-heading"><h3 id="equipment-title">장비</h3></div><div id="spec-equipment" class="spec-card-content"></div></section>
+      <section class="spec-card" id="card-accessories" aria-labelledby="accessories-title"><div class="spec-card-heading"><h3 id="accessories-title">악세 · 팔찌 · 스톤</h3></div><div id="spec-accessories" class="spec-card-content"></div></section>
+      </div>
+    </section>
+    <section id="panel-build" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-build" tabindex="0" hidden>
+      <h2 class="spec-visually-hidden">장착 보석</h2>
+      <div class="spec-grid spec-build-grid">
+      <section class="spec-card" id="card-gems" aria-labelledby="gems-title"><div class="spec-card-heading"><h3 id="gems-title">장착 보석</h3></div><div id="spec-gems" class="spec-card-content"></div></section>
+      </div>
+    </section>
+    <section id="panel-engravings" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-engravings" tabindex="0" hidden>
+      <section class="spec-card" id="card-engravings" aria-labelledby="engravings-title"><div class="spec-card-heading"><h3 id="engravings-title">각인</h3></div><div id="spec-engravings" class="spec-card-content"></div></section>
+    </section>
+    <section id="panel-cards" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-cards" tabindex="0" hidden>
+      <section class="spec-card" id="card-cards" aria-labelledby="cards-title"><div class="spec-card-heading"><h3 id="cards-title">장착 카드와 세트 효과</h3></div><div id="spec-cards" class="spec-card-content"></div></section>
+    </section>
+    <section id="panel-arkpassive" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-arkpassive" tabindex="0" hidden>
+      <h2 class="spec-visually-hidden">아크패시브</h2>
+      <section class="spec-card" id="card-arkpassive" aria-labelledby="arkpassive-title"><div class="spec-card-heading"><h3 id="arkpassive-title">포인트와 채용 노드</h3></div><div id="spec-arkpassive" class="spec-card-content"></div></section>
+    </section>
+    <section id="panel-crit" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-crit" tabindex="0" hidden>
+      <h2 class="spec-visually-hidden">치명타 적중률</h2>
+      <section class="spec-card" id="card-crit" aria-labelledby="crit-title"><div class="spec-card-heading"><h3 id="crit-title">치적 합산과 효과</h3></div><div id="spec-crit" class="spec-card-content"></div></section>
+    </section>
+    <section id="panel-arkgrid" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-arkgrid" tabindex="0" hidden>
+      <section class="spec-card" id="card-arkgrid" aria-labelledby="arkgrid-title"><div class="spec-card-heading"><h3 id="arkgrid-title">아크그리드 코어 · 젬</h3></div><div id="spec-arkgrid" class="spec-card-content"></div></section>
+    </section>
+    <section id="panel-specup" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-specup" tabindex="0" hidden>
+      <div id="spec-specup" class="spec-specup"></div>
+    </section>
+    <section id="panel-roster" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-roster" tabindex="0" hidden>
+      <h2 class="spec-visually-hidden">원정대 현황</h2>
+      <div class="spec-grid spec-roster-grid">
+      <section class="spec-card spec-card-wide" id="card-roster" aria-labelledby="roster-title"><div class="spec-card-heading"><h3 id="roster-title">원정대 캐릭터</h3></div><div id="spec-roster" class="spec-card-content"></div></section>
+      </div>
+    </section>
+    <section id="panel-valuation" class="spec-tab-panel" role="tabpanel" aria-labelledby="tab-valuation" tabindex="0" hidden>
+      <div id="spec-valuation" class="spec-value"></div>
+    </section>
+    <div class="spec-page-notes"><p class="spec-data-note" id="spec-data-note">검색할 때 최신 정보로 갱신합니다.</p>
+    <details class="spec-command-help"><summary>봇 명령</summary><dl>
+      <div><dt>캐릭터 정보</dt><dd><code>.정보</code> <code>/전투력</code></dd></div>
+      <div><dt>장비</dt><dd><code>.군장</code> <code>/장비</code></dd></div>
+      <div><dt>악세·팔찌·스톤</dt><dd><code>/악세</code> <code>/팔찌</code> <code>/스톤</code></dd></div>
+      <div><dt>보석·각인</dt><dd><code>/장착보석</code> <code>.군장</code></dd></div>
+      <div><dt>아크패시브</dt><dd><code>/앜패</code></dd></div>
+      <div><dt>치적</dt><dd><code>.치적</code></dd></div>
+      <div><dt>원정대</dt><dd><code>/원정대</code> <code>.부캐</code></dd></div>
+      <div><dt>아크그리드·젬 효율</dt><dd><code>.아크그리드</code> <code>.젬효율</code></dd></div>
+      <div><dt>스펙업</dt><dd><code>/스펙업</code> <code>.ㅅㅍㅇ</code></dd></div>
+    </dl></details></div>
+    </div>
+  </div>
+  <noscript><p class="spec-status">캐릭터 스펙을 조회하려면 브라우저에서 JavaScript를 사용할 수 있어야 합니다.</p></noscript>
+</main>
+<footer class="spec-footer"><span class="spec-brand">포근해용</span><div><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="./">홈페이지</a></div></footer>
+</body>
+</html>

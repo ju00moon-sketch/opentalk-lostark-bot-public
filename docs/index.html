@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08111d">
+<title>포근해용 — 로스트아크 캐릭터·시세·길드</title>
+<meta name="description" content="로스트아크 캐릭터 스펙과 거래소 시세, 콘텐츠 일정, 포근해 길드 일정을 한곳에서 확인하세요.">
+<script src="theme.js"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+<link rel="preload" href="assets/fonts/body-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="renewal.css">
+<link rel="stylesheet" href="homepage.css">
+<script src="renewal.js" defer></script>
+<script src="home.js" defer></script>
+<script src="auth.js" defer></script>
+
+</head>
+<body>
+<a class="skip-link" href="#main-content">본문 바로가기</a>
+
+<header data-site-header data-active="home"></header>
+
+<main class="wrap" id="main-content" tabindex="-1">
+
+  <section class="tab-panel active" id="panel-intro" aria-label="홈">
+    <div class="dashboard-hero">
+      <div class="dashboard-intro"><p>LOST ARK · 루페온</p><h1>함께하는 모험,<br><span>포근해용</span></h1></div>
+      <div class="dashboard-search-wrap">
+        <form class="dashboard-search" action="spec.html" method="get" role="search">
+          <label class="visually-hidden" for="home-character">캐릭터명</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4 4"/></svg>
+          <input id="home-character" name="characterName" placeholder="캐릭터명을 검색하세요" required minlength="2" maxlength="12" autocomplete="off" spellcheck="false" enterkeyhint="search">
+          <button type="submit" aria-label="캐릭터 검색">→</button>
+        </form>
+        <div class="dashboard-quick"><a href="spec.html">#캐릭터 검색</a><a href="tools.html">#재련 시세</a><a href="tools.html?kind=gems&amp;q=10겁">#보석 경매</a><a href="tools.html#bid-calculator">#분배금 계산</a><a href="tools.html#honing">#장비 강화</a><a href="todo.html">#숙제표</a><a href="guild.html">#길드 일정</a></div>
+        <p id="home-access-status" class="dashboard-access-status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="dashboard-hero-note"><span>PLAY MORE<br>TOGETHER</span><b>포근해 길드</b></div>
+    </div>
+    <div class="realm-dashboard">
+      <section class="realm-panel dashboard-characters"><div class="realm-panel-head"><h2>내 캐릭터</h2><a href="spec.html">조회하기 ›</a></div><div id="home-representative" class="dashboard-representative" hidden></div><div class="dashboard-filter" role="group" aria-label="캐릭터 목록"><button class="active" data-characters="recent" aria-pressed="true" type="button">최근 조회</button><button data-characters="favorites" aria-pressed="false" type="button">즐겨찾기</button></div><div id="home-characters" aria-live="polite"></div></section>
+      <section class="realm-panel dashboard-events"><div class="realm-panel-head"><h2>아크라시아 소식</h2><a href="https://lostark.game.onstove.com/News/Event/Now" target="_blank" rel="noopener noreferrer">공식 이벤트 ↗</a></div><div id="home-events" aria-live="polite" class="dashboard-event-grid"></div></section>
+      <section class="realm-panel dashboard-calendar"><div class="realm-panel-head"><h2>다가오는 콘텐츠</h2><span id="home-date" class="realm-muted"></span></div><div id="home-calendar" aria-live="polite"></div></section>
+      <section class="realm-panel dashboard-chart"><div class="realm-panel-head"><h2>골드 시세 추이</h2><div class="dashboard-gold-controls"><select id="home-gold-server" aria-label="골드 시세 서버" disabled><option value="lupeon">루페온</option><option value="silian">실리안</option><option value="aman">아만</option><option value="abrelshud">아브렐슈드</option><option value="karmine">카마인</option><option value="kazeros">카제로스</option><option value="kadan">카단</option><option value="ninav">니나브</option></select><a id="home-gold-source" href="https://gamebit.co.kr/lupeon" target="_blank" rel="noopener noreferrer">게임비트 ↗</a></div></div><div id="home-history" aria-live="polite" class="dashboard-history"></div></section>
+      <section class="realm-panel dashboard-market"><div class="realm-panel-head"><h2>주요 재련 재료</h2><a href="tools.html">더보기 ›</a></div><div id="home-market" aria-live="polite" class="dashboard-market-grid"></div><p id="home-market-time" class="dashboard-source"></p></section>
+      <section class="realm-panel dashboard-notices"><div class="realm-panel-head"><h2>로스트아크 공지</h2><a href="https://lostark.game.onstove.com/News/Notice/List" target="_blank" rel="noopener noreferrer">더보기 ↗</a></div><div id="home-notices" aria-live="polite"></div></section>
+      <section class="realm-panel dashboard-updates"><div class="realm-panel-head"><h2>포근해용 업데이트</h2><button type="button" data-tab="updates">더보기 ›</button></div><div class="dashboard-release-list">
+        <a href="updates/v1.4.html"><span class="dashboard-release-version">v1.4</span><span class="dashboard-release-art" aria-hidden="true">⚒</span><div><b>장비 강화 탭과 회원 기능 보완</b><p>재료별 소모량 · 숙제표 저장 보완 · 인공지능 답변 모델 교체</p></div><span class="dashboard-row-arrow" aria-hidden="true">›</span></a>
+        <a href="updates/v1.3.html"><span class="dashboard-release-version">v1.3</span><span class="dashboard-release-art" aria-hidden="true">⌖</span><div><b>재련 최저 비용 계산기</b><p>숨결·책을 가장 싸게 넣는 법 · 캐릭터 화면 스펙업 탭 · 10단계 티어 · 팔찌 자동 조회</p></div><span class="dashboard-row-arrow" aria-hidden="true">›</span></a>
+        <a href="updates/v1.2.html"><span class="dashboard-release-version">v1.2</span><span class="dashboard-release-art" aria-hidden="true">✧</span><div><b>길드 일정과 이모티콘</b><p>길드원 인증 · 일정 시트 · 생일 모코코</p></div><span class="dashboard-row-arrow" aria-hidden="true">›</span></a>
+        <a href="updates/v1.1.html"><span class="dashboard-release-version">v1.1</span><span class="dashboard-release-art" aria-hidden="true">♜</span><div><b>길드 랭킹과 자동 공지</b><p>스펙 랭킹 · 수요일 업데이트 알림</p></div><span class="dashboard-row-arrow" aria-hidden="true">›</span></a>
+      </div></section>
+      <section class="realm-panel dashboard-tools"><div class="realm-panel-head"><h2>유용한 도구</h2><a href="tools.html">전체 보기 ›</a></div><div class="dashboard-tool-grid"><a href="spec.html"><span aria-hidden="true">⌖</span><div><b>캐릭터 스펙</b><small>장비와 세팅 조회</small></div><i aria-hidden="true">›</i></a><a href="tools.html"><span aria-hidden="true">◇</span><div><b>거래소 검색</b><small>현재가 · 일별 시세</small></div><i aria-hidden="true">›</i></a><a href="tools.html?kind=gems&amp;q=10겁"><span aria-hidden="true">✦</span><div><b>보석 경매</b><small>겁화 · 작열 최저가</small></div><i aria-hidden="true">›</i></a><a href="tools.html#bid-calculator"><span aria-hidden="true">⊞</span><div><b>분배금 계산</b><small>4인 · 8인 · 16인</small></div><i aria-hidden="true">›</i></a><button data-tab="commands" type="button"><span aria-hidden="true">⌘</span><div><b>봇 명령어</b><small>70개 명령과 별칭</small></div><i aria-hidden="true">›</i></button><button data-tab="emoticons" type="button"><span aria-hidden="true">☻</span><div><b>이모티콘</b><small>182종 키워드 찾기</small></div><i aria-hidden="true">›</i></button></div></section>
+      <section class="realm-panel dashboard-guild"><div class="realm-panel-head"><h2>함께, 더 멀리</h2></div><div class="dashboard-guild-body"><p>루페온 · 포근해</p><h2>우리의 다음 모험도,<br>함께.</h2><a class="realm-action primary" href="guild.html">길드 일정 <span aria-hidden="true">›</span></a></div><div class="dashboard-guild-links"><a href="https://discord.com/oauth2/authorize?client_id=YOUR_DISCORD_APPLICATION_ID&amp;permissions=52224&amp;scope=bot%20applications.commands">디스코드 봇 초대 ↗</a><button type="button" data-tab="link">카카오톡 안내 ›</button></div></section>
+    </div>
+  </section>
+
+  <!-- ── 커맨드 ── -->
+  <section class="tab-panel" id="panel-commands">
+    <h1 class="page">명령어</h1>
+    <p class="lead">디스코드에서 슬래시(/)를 치면 기본 커맨드 70개가 떠요. 초성·단어 별칭은 기존 채팅 입력으로 사용할 수 있고, <code>/도움말</code>에서 다시 볼 수 있습니다. 출첵·출석현황·한마디는 아래 카카오톡 전용 영역을 확인해 주세요.</p>
+    <div class="pills"><span class="pill">슬래시 70개</span><span class="pill">채팅 별칭 지원</span><span class="pill">카톡 전용 3개</span><span class="pill">이모티콘 182종</span></div>
+
+    <div class="cmd-group">
+      <h2>캐릭터 조회</h2>
+      <p class="section-desc"><code>/등록</code> 해두면 아래 커맨드에서 닉네임을 생략할 수 있어요.</p>
+      <div class="cmd-table">
+        <div class="cmd-row"><span class="cmd"><code>/등록</code><em>ㄷㄹ</em></span><span class="desc">내 디스코드 서버 닉네임으로 캐릭터 등록 (본인 것만) — 이후 모든 조회 커맨드에서 닉네임 생략</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/정보 닉네임</code><em>ㅈㅂ</em></span><span class="desc">스펙 종합 요약 — 돌 · 각인 · 카드 · 아크패시브 · 특성 · 수집품 · 카카오톡에서는 장비 정보를 별도 메시지로 안내</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/캐릭터 닉네임</code><em>ㅋㄹㅌ</em></span><span class="desc">서버 · 직업 · 아이템 레벨 등 기본 정보</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/군장 닉네임</code><em>ㄱㅈ</em></span><span class="desc">장비 · 각인 · 보석 · 카드 한눈에</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/전투력 닉네임</code></span><span class="desc">전투력 · 전투 특성 · 공격력/생명력 · 카톡 전체 보기에서 부캐 전투력</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/치적 닉네임</code><em>ㅊㅈ</em></span><span class="desc">치명타 적중률 출처별 합산 — 스탯 · 악세 · 팔찌 · 각인 · 상시 아크패시브 노드 (백어택은 기습의 대가 착용 시) · 조건부 노드·아이덴티티·치적 시너지는 추가 확률로 · 출처별 세부를 묶어 표시하고 뭉툭한 가시 채용 시 진화형 피해와 치적 상한 안내</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/로펙 닉네임</code><em>ㄹㅍ</em></span><span class="desc">로펙 환산 점수 · 전체/직업 순위 · 레벨 중앙값 대비 · 보유카드 · 팔찌/젬 효율</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/포펙 닉네임</code><em>ㅍㅍ</em></span><span class="desc">포근해용 환산 점수(최고 기록) · 티어 문양 · 상위 % 기준 · 다음 티어 · 팔찌/젬 효율 · 공식 전투력 · 티어 기준표</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/젬효율 닉네임</code><em>ㅈㅎㅇ</em></span><span class="desc">아크 그리드 젬 효율 — 옵션/포인트 구성과 옵션별 실효율, 젬 뽑기 기댓값(개발 버전)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/스펙업 닉네임</code><em>ㅅㅍㅇ</em></span><span class="desc">스펙업 효율 — 첫 조회 속도·카카오톡 응답 대기 개선 · 같은 골드 대비 딜 상승률(%) 순으로 디스코드 상위 10개·카톡 상위 5개 · 강화·장신구는 로펙 점수 비율, 보석은 직업·빌드별 스킬 딜 비중으로 계산 · 카톡은 옵션·비용·딜 상승·효율을 나눠 표시, 전체 보기에서 모든 후보와 모델 환산 점수 또는 로펙 변경 후 점수 제공 · 0G는 무료, 로펙 시세 보충 비용은 * · 페온은 자동 갱신 또는 직접 설정한 크리스탈 시세로 환산(<code>/크리스탈</code>로 확인, 시세 미수신 시 제외)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/크리스탈 [95개가격]</code><em>ㅋㄹㅅㅌ</em></span><span class="desc">스펙업 페온 환산용 크리스탈 시세 — 매일 08:00 로아툴(LOSPI) 시세 자동 갱신, 직접 적은 값(화폐거래소에서 골드로 블루 크리스탈 95개를 살 때 가격)은 24시간 우선. 시세가 있으면 스펙업의 악세·스톤 비용에 페온 골드 포함</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/원정대</code> <code>/부캐 닉네임</code><em>ㅂㅋ</em></span><span class="desc">계정의 모든 캐릭터를 아이템 레벨 순으로 (서버별 묶음)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/랭킹</code><em>ㄹㅋ</em></span><span class="desc">길드 내 스펙 랭킹 — 등록된 길드원의 로펙 달성 최고 점수 순 (중앙값 대비 · 직업 순위 · 딜러/서포터 구분)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/체급</code><em>ㅊㄱ</em></span><span class="desc">원정대 체급 랭킹 — 1720↑ 캐릭터의 로펙 환산 점수 합 (딜러·서포터 같은 척도)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/환산가치</code><em>ㅎㅅㄱㅊ</em></span><span class="desc">원정대 환산 가치 랭킹 — 1720↑ 캐릭터를 골드로 환산한 합의 <b>최고 기록</b> (재련·보석·악세·각인서·팔찌·젬, 시세는 매일 새벽 반영) · <code>/환산가치 갱신</code>으로 지금 장비 다시 계산</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-group">
+      <h2>캐릭터 상세</h2>
+      <p class="section-desc">부위별로 깊게 볼 때.</p>
+      <div class="cmd-table">
+        <div class="cmd-row"><span class="cmd"><code>/장비</code> <code>/악세</code> <code>/스톤</code></span><span class="desc">부위별 상세 — 품질, 연마 효과, 세공 각인</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/팔찌 닉네임</code></span><span class="desc">스톤·팔찌 정보와 팔찌 효율(홈페이지와 같은 계산), 팔찌 뽑기 기댓값(개발 버전) · 닉네임 대신 <code>치특 90 90</code>을 입력하면 치명·특화 각 90 이상, 부여 효과 3줄인 고대 4티어 팔찌를 즉시 구매가 최저 10개 검색. 일반 채팅은 <code>.팔찌 치특 90 90</code>, 카톡은 <code>/팔찌 치특 90 90</code>도 지원. 같은 조건의 매물이 없으면 특성 기준으로 범위를 넓혀 조회합니다.</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/스킬 닉네임</code></span><span class="desc">채용 스킬 · 트라이포드 · 룬</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/장착보석 닉네임</code></span><span class="desc">장착 보석과 스킬별 효과</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/앜패</code> <code>/아크그리드</code><em>ㄱㄹㄷ</em></span><span class="desc">아크 패시브 포인트/노드 · 아크 그리드 코어/효과</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/앜그현황 [닉네임]</code> <code>.앜그현황 [닉네임]</code><em>.코어현황</em></span><span class="desc">같은 서버의 코어 장착 캐릭터를 아이템 레벨 내림차순으로 실시간 조회 — 캐릭터별 고대·유물·전설 코어 개수와 포인트, 전체 합계. 등록 캐릭터로 닉네임 생략 가능. <code>.코어현황</code>은 같은 커맨드이며 초성·단독 입력 없음. 다른 서버·빈 코어 제외, 조회 실패는 따로 표시하고 확인된 캐릭터의 부분합 안내</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/아바타 닉네임</code></span><span class="desc">장착 아바타 목록</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/내실 닉네임</code></span><span class="desc">수집품 진행도 (모코코 씨앗, 섬의 마음 등)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/낙원력 닉네임</code></span><span class="desc">낙원력 조회 (보주 툴팁 기준)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/스킬코드 닉네임</code><em>ㅅㅋㅋㄷ</em></span><span class="desc">게임 호환 스킬코드 (K창 붙여넣기) + 빌드 요약</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-group">
+      <h2>시세 · 계산</h2>
+      <p class="section-desc">거래소와 경매장은 실시간으로 조회합니다.</p>
+      <div class="cmd-table">
+        <div class="cmd-row"><span class="cmd"><code>/시세 아이템명</code><em>ㅅㅅ</em></span><span class="desc">거래소 가격 검색 (부분 검색 가능)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/골드시세</code><em>ㄱㄷㅅㅅ</em></span><span class="desc">서버별 골드 시세 — 중개 사이트(게임비트) 기준 1만 골드당 원, 지금 가격과 전일 대비 변동 (5분 캐시)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/강화 부위 현재 목표</code><em>ㄱㅎ 무기 18 20</em></span><span class="desc">재련 최저 비용 — 숨결·책을 어떻게 넣는 게 가장 싼지 현재 거래소 시세로 계산 · 단계마다 넣을 개수와 기대 비용, 평균 시도 횟수 · 보조 재료 없이 두드릴 때보다 얼마나 아끼는지 함께 표시 · 목표 +21 이상은 거래소에 책이 없어 숨결만 계산 · 실링·귀속 재료 제외</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/쌀</code><em>ㅆ · .쌀값</em></span><span class="desc">쌀값 — 재련 재료(파괴석·수호석·돌파석·융화 재료·파편 주머니·숨결·에스더의 기운) 거래소 최저가 한눈에 + 전일 대비 (5분 캐시)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/팔찌검색 옵션</code><em>ㅍㅉㄱㅅ</em></span><span class="desc">경매장 팔찌 검색 — 특·치·신·제·인·숙 최소값(예: <code>특90치90</code>, 붙여 써도 됨), 선택 <code>부여3</code>·<code>고정2</code>·특수 효과 이름 → 고대 4티어 즉시 구매가 최저 10개 (부여 효과 내용은 API 미제공)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/보석</code><em>ㅄ · ㅂㅅ</em></span><span class="desc">겁화→작열 순, 종류별 10→7레벨 최저가 시세판 + 전일 대비 · <code>/보석 종류 레벨</code> 단일 시세 · <code>/보석 닉네임</code> 그 캐릭터 장착 보석 · <code>/보석현황</code> 4티어 레벨별 표</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/보석최저가</code></span><span class="desc">인자 없는 <code>/보석</code>과 같은 겁화·작열 10~7레벨 최저가와 전일 대비 시세판 · 채팅 <code>.보석최저가</code> 지원</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/경매장 10겁</code><em>ㄱㅁㅈ</em></span><span class="desc">겁화·작열 보석 단일 최저가 검색 (1~10레벨) · <code>ㄱㅁㅈ 9작</code> · <code>.경매장 겁화 10</code> · 카톡은 <code>/ㄱㅁㅈ 10겁</code>도 지원 · 결과는 정식 보석명으로 표시</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/각인서 각인명</code><em>ㄱㅇㅅ</em></span><span class="desc">각인서 시세 (등급별)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/유각</code> <code>/전각</code><em>ㅇㄱ · ㅈㄱㅇ · .비싼유각</em></span><span class="desc">비싼 유물 · 전설 각인서 TOP 10 + 전일 대비 · <code>/유각 2</code>로 다음 쪽 (<code>/각인서랭킹 [등급] [페이지]</code>의 단축 커맨드) · 채팅 <code>.비싼유각</code>은 <code>/유각</code>과 같은 커맨드 · 카톡에서는 <code>ㅂㅆㅇㄱ</code>·<code>/ㅂㅆㅇㄱ</code>·<code>.ㅂㅆㅇㄱ</code>도 지원하며 <code>ㅂㅆㅇㄱ 2</code>로 다음 쪽 조회</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/생활재료</code></span><span class="desc">생활 재료 분야별 시세</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/분배금 가격 [인원]</code><em>ㅂㅂㄱ</em></span><span class="desc">선점 추천가·균등 분배가·재판매 원금 회수 상한을 구분 (4/8/16인). <b>균등 분배가</b>는 낙찰자의 재판매 이익과 나머지 인원의 분배금이 같아지는 금액, <b>선점 추천가</b>는 거기서 1.1로 나눠 낙찰 쪽에 여유를 둔 금액, <b>재판매 상한</b>은 판매 수수료 5%만 반영한 금액이라 분배금을 포기하는 기회비용은 빠져 있어요. 채팅 <code>.분배금 원한</code>·<code>ㅂㅂㄱ 저주받은 인형 8</code>은 유물 각인서의 권당 현재 최저가로 계산합니다. 카톡은 <code>/분배금 원한</code>도 사용할 수 있으며 디스코드 슬래시는 숫자 가격을 입력합니다. 각인서명은 <code>ㅂㅂㄱ 질량증가</code>처럼 띄어쓰기 없이 적어도 됩니다.</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/경매금 가격 [인원]</code><em>ㄱㅁㄱ · ㄱㅁ</em></span><span class="desc"><code>/분배금</code>과 같은 입찰가 계산기입니다. 채팅 <code>ㄱㅁㄱ 4000</code>·<code>ㄱㅁ 4000</code>·<code>ㄱㅁㄱ 원한 8</code>·<code>.경매금 4000</code>으로 입력하며, 카톡은 <code>/경매금</code>과 접두사 없는 <code>ㄱㅁㄱ</code>·<code>ㄱㅁ</code>도 됩니다. 계산 기준과 결과는 분배금과 같습니다.</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/악세 검색 [품질]</code></span><span class="desc">연마 조합별 경매장 최저가 — 채팅은 <code>.상상</code> <code>.상중 70</code></span></div>
+        <div class="cmd-row"><span class="cmd"><code>/연마표</code></span><span class="desc">악세서리 연마 효과 수치표</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/cpm 횟수 시간 [목표]</code><em>.cpm</em></span><span class="desc">분당 시전 횟수 — 평균 간격과 목표 CPM 달성에 필요한 횟수 (예: <code>.cpm 35 7분</code>)</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-group">
+      <h2>레이드 · 게임 정보</h2>
+      <p class="section-desc">딜지분·딜컷은 로아뷰 공개 딜컷을 기준으로 합니다(2026-09-07 확인). 지분은 잔혈 컷에서 역산한 예상치이며, 달성 여부는 공개 피해량 컷으로 판단합니다. 실제 MVP와 다를 수 있습니다. 골드표·시너지 같은 게임 상수는 패치에 맞춰 관리합니다.</p>
+      <div class="cmd-table">
+        <div class="cmd-row"><span class="cmd"><code>/딜지분 레이드 [관문] [피해량]</code><em>ㄷㅈㅂ</em></span><span class="desc">공개 딜컷 기준 딜지분 · 예상 칭호 · 컷 달성 여부</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/딜컷 레이드 [관문] [분]</code><em>ㄷㅋ</em></span><span class="desc">관문별 예상 강투 · 1인분 · 잔혈 컷과 필요 DPS</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/클골 [레이드명]</code><em>ㅋㄱ</em></span><span class="desc">레이드 클리어 골드표 (관문별 + 더보기)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/주급 닉네임</code><em>ㅈㄱ</em></span><span class="desc">원정대 주간 골드 수입 추정 (상위 6캐릭 × 3레이드)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/시너지 [검색]</code><em>ㅅㄴㅈ</em></span><span class="desc">계열별 직업·빌드 시너지 수치 — 전태/고기·질풍/이슬비·딜러 세팅 서포터 구분 (직업명·축약명·방깎/치적/피증 검색)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/체방</code><em>ㅊㅂ</em></span><span class="desc">직업별 체방 계수표 (이미지)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/지옥</code> <code>/나락</code><em>ㅈㅇ · ㄴㄹ</em></span><span class="desc">강하 선택 추천 경로 (등급 필수 · 예: /지옥 전설)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/효율 콘텐츠 단계 [레벨]</code></span><span class="desc">보상 선택지 가치 랭킹 (실시간 시세)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/코어 검색</code></span><span class="desc">아크 그리드 코어 정보 (직업/코어명/혼돈)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/가토</code><em>ㄱㅌ</em></span><span class="desc">이번 주 잔영 가디언 + 속성 취약 + 추천 카드</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-group">
+      <h2>콘텐츠 · 소식</h2>
+      <p class="section-desc">알림은 관리자가 채널을 정해두면 자동으로 옵니다.</p>
+      <div class="cmd-table">
+        <div class="cmd-row"><span class="cmd"><code>/떠상 [서버]</code><em>ㄸㅅ</em></span><span class="desc">떠돌이 상인 — 8개 서버의 전설 호감도 개수와 전설 카드·기타 전설 아이템 이름, 판매 마감까지 남은 시간, 서버를 넣으면 대륙별 판매 품목 (클로아 커뮤니티 제보 기준)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/모험섬</code><em>ㅁㅎㅅ</em></span><span class="desc">오늘의 모험 섬 시간표 + 주요 보상 (골드섬 💰 표시)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/점메추</code><em>ㅈㅁㅊ · .ㅈㅁㅊ</em></span><span class="desc">점심 메뉴와 맛·식감 등에 관한 한마디 — ㅈㅁㅊ는 한국 시간 15시 전 점심·15시부터 저녁. 카톡에서는 <code>ㅈㅁㅊ</code>만 단독으로 보내거나 <code>.ㅈㅁㅊ</code>·<code>/ㅈㅁㅊ</code>로 입력해 주세요</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/저메추</code><em>.저메추</em></span><span class="desc">저녁 메뉴와 맛·식감 등에 관한 한마디 — 정식 명령은 시간과 무관하며, 서울의 현재 날씨도 참고해요</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/업데이트</code> <code>.업뎃</code><em>ㅇㄷㅇㅌ</em></span><span class="desc">이번 주 업데이트 내역 — 버튼으로 공지 바로 열기, 같은 날 공지와 지난 업데이트도 함께. 디스코드 알림 채널에 자동 발송하며 카톡은 새 폰 스크립트 적용 시 수요일 당일 전체 공지를 제목·원문 링크로 묶어 단체방에 자동 알림</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/이벤트</code> <code>/공지</code></span><span class="desc">진행 중 이벤트 · 최신 공지사항 (점검 중에는 홈페이지 공지 목록으로 대체)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/알림설정</code></span><span class="desc">서버별 알림 채널 켜기/끄기 — 모험섬 아침 알림 · 업데이트 공지 알림 · 떠돌이 상인 출현 알림 (관리자)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/이모티콘</code></span><span class="desc">사용 가능한 이모티콘 키워드 목록</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/챗 질문</code><em>.챗 질문</em></span><span class="desc">궁금한 내용을 물어보고 답변을 받아요. 예: <code>/챗 무지개는 왜 생겨?</code>. 질문은 2,000자까지, 따옴표 없이도 사용 가능해요. 매번 새 질문에 답하며 이전 대화나 실시간 정보는 조회하지 않아요. 카톡에서도 <code>/챗</code>·<code>.챗</code>으로 사용할 수 있어요. 오늘 날짜·요일·계절을 반영해요.</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/vs 비교:A vs B</code><em>낮잠조진다vs버텨 · .vs</em></span><span class="desc">두 선택지를 각각 50% 확률로 골라 짧은 존댓말 코멘트 한 줄을 전해드려요. 가벼운 유머를 담은 60자 이내 코멘트이며 객관적인 우열을 판단하지는 않습니다. 코멘트를 준비하지 못하면 처음 고른 선택지 한 줄만 표시합니다. 디스코드 채팅에서는 <code>낮잠조진다vs버텨</code>·<code>노트북 vs 컴퓨터</code>로 바로 입력할 수 있습니다. 카톡에서도 <code>낮잠조진다vs버텨</code>처럼 접두사 없이 보내거나 <code>.vs 낮잠조진다vs버텨</code>·<code>/vs 낮잠조진다vs버텨</code>로 입력할 수 있습니다. 영어가 <code>vs</code>에 붙을 때는 <code>A vs B</code>처럼 공백을 넣어 주세요(<code>VS</code>·<code>vs.</code>도 가능). 각 80자·전체 180자 이내이며, 웹 검색·최신 가격·사양 조회는 하지 않습니다.</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/도움말</code><em>ㄷㅇㅁ</em></span><span class="desc">커맨드 사용법 안내 (본인에게만 표시)</span></div>
+      </div>
+      <p class="section-desc">메뉴에 따라 맛·식감·먹는 방법이나 고른 이유를 짧게 들려드려요. 최근 한마디를 참고해 반복을 줄이며, 같은 문장이 반복되거나 추천을 준비하지 못하면 메뉴명만 안내합니다. 메뉴 추천은 디스코드·카카오톡의 점심·저녁 추천 목록을 하루 동안 함께 참고해 중복을 줄여요. 당일 기록은 재시작 후에도 이어지고, 한국 시간으로 날짜가 바뀐 뒤 첫 요청부터 새로 시작합니다. 기본 메뉴까지 모두 추천하면 같은 메뉴가 다시 나올 수 있으며, 이름이 다른 비슷한 음식은 겹칠 수 있어요.</p>
+    </div>
+
+    <div class="cmd-group">
+      <h2>카카오톡 전용</h2>
+      <p class="section-desc">아래 세 커맨드는 카톡에서만 사용할 수 있습니다. 디스코드의 슬래시·채팅 입력에는 응답하지 않습니다.</p>
+      <div class="cmd-table">
+        <div class="cmd-row"><span class="cmd"><code>/출첵</code><em>ㅊㅊ</em></span><span class="desc">방마다 하루 한 번(한국 시간 자정 기준) 1~3P 무작위 지급, 해당 방의 이번 달 포인트·출석 횟수 표시. 매월 1일 한국 시간 00:00 초기화 (<code>/출첵</code>·<code>.ㅊㅊ</code>·접두사 없는 <code>ㅊㅊ</code>)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>/출석현황</code></span><span class="desc">이번 달에 현재 방에서 출석한 참여자의 순위표 — <code>[1위] 닉네임 | 22P</code> 형식. 포인트가 높은 순이며 동점이면 출석 횟수가 많은 순·닉네임순. 카톡의 <b>출석 현황 전체보기</b> 안내에서 순위표 확인 (<code>.출석현황</code>, 접두사 없는 <code>ㅊㅊㅎㅎ</code>, 옛 <code>/출석체크현황</code>도 동작)</span></div>
+        <div class="cmd-row"><span class="cmd"><code>한마디</code><em>ㅎㅁㄷ · /한마디</em></span><span class="desc">사람마다 다른 오늘의 응원·공감, 짧은 창작 명언과 웃음 섞인 한마디. 다른 사람이 오늘 받은 본문은 피하고, 같은 날 다시 부르면 “오늘의 한마디는 이미 받으셨어요. 내일 다시 시도해주세요”만 전해요. 준비된 문장과 짧은 두 문장 조합도 사용 · <code>한마디</code>·<code>ㅎㅁㄷ</code> 단독 입력은 접두사 없이 가능</span></div>
+      </div>
+      <p class="section-desc">방별 기록은 0P부터 시작하며, <b>매월 1일 한국 시간 00:00에 포인트·출석 횟수·현황 집계가 초기화</b>됩니다. 현황에는 이번 달에 이 방에서 출석한 참여자만 나옵니다. 전체 방 멤버 목록은 제공하지 않으며 긴 현황은 <b>전체 보기</b>에서 확인할 수 있어요. 연결된 방은 이름이 바뀌어도 포인트와 출석 횟수를 이어갑니다. 이름이 같은 다른 방은 별도로 구분합니다. 카톡 닉네임을 바꾼 경우에는 기존 기록 연결을 운영자에게 요청해 주세요.</p>
+    </div>
+
+    <div class="note">
+      <div class="title">기존 채팅 입력도 그대로</div>
+      디스코드에서 둘 중 하나 고르기는 <code>낮잠조진다vs버텨</code>·<code>노트북 vs 컴퓨터</code>처럼 접두사 없이 입력할 수 있습니다. 기존 커맨드는 먼저 처리하며, <code>.없는명령 A vs B</code> 같은 등록되지 않은 명령은 선택 요청으로 바꾸지 않습니다.
+      디스코드 초성은 그냥 치면 됩니다 — <code>ㅂㅂㄱ 4000</code>. 단어형은 점을 붙여요 — <code>.분배금 4000</code>, <code>.업뎃</code>. 슬래시 목록에는 <code>/분배금</code>·<code>/업데이트</code>처럼 기본 이름만 등록하며, 초성·단어 별칭은 채팅으로 사용합니다. 이모티콘 키워드와 결과 버튼도 그대로입니다.
+    </div>
+  </section>
+
+  <!-- ── 이모티콘 ── -->
+  <section class="tab-panel" id="panel-emoticons">
+    <h1 class="page">이모티콘 182종</h1>
+    <p class="lead">커맨드가 아니라 일반 채팅으로 씁니다. 커맨드 채널 제한과 무관하게 서버 어느 채널에서든 작동해요.</p>
+
+    <div class="howto">
+      <div class="card">
+        <div class="step">1 — 대괄호나 점으로 부르기</div>
+        <div class="sample">[굳<span class="eq">=</span>.굳</div>
+        <p><code>[</code> 또는 <code>.</code>에 키워드를 붙이면 봇이 이미지를 올려줍니다. 대괄호는 닫지 않아도 됩니다. 점 입력은 기존 커맨드를 우선합니다.</p>
+      </div>
+      <div class="card">
+        <div class="step">2 — 모코콩콘은 짧게</div>
+        <div class="sample">[감사<span class="eq">=</span>[감사콩</div>
+        <p>또리콩 작가의 모코콩콘은 이름 끝의 <b style="color:var(--text)">콩</b>을 생략해도 나옵니다. <code>[저요</code>는 새 이미지로 응답하므로, 기존 움직이는 이미지는 <code>[저요콩</code>으로 불러 주세요.</p>
+      </div>
+    </div>
+
+    <div class="kw-head">
+      <h2 style="margin:0">키워드 목록</h2>
+      <span>서버에서 <code>/이모티콘</code> 으로도 볼 수 있어요</span>
+    </div>
+
+    <details class="kw-group" open>
+      <summary>새 이모티콘 <span class="count">16종</span></summary>
+      <div class="kw-chips">
+        <code>[버퍼</code> <code>[뾰루</code> <code>[시무룩</code> <code>[메롱</code> <code>[파티</code> <code>[한잔해</code> <code>[라면</code> <code>[팝콘</code> <code>[제가요</code> <code>[눈치</code> <code>[도움도움</code> <code>[미안해요</code> <code>[뿌듯</code> <code>[암수끝</code> <code>[야무치</code> <code>[저요</code>
+      </div>
+      <p>숫자 대신 그림 이름으로 불러 주세요. 디스코드·카카오톡에서 <code>[메롱</code>·<code>.메롱</code>처럼 사용할 수 있습니다.</p>
+    </details>
+    <details class="kw-group" open>
+      <summary>생일 모코코 <span class="count">6종</span></summary>
+      <div class="kw-chips">
+        <code>[굳코코</code> <code>[추카코코</code> <code>[냠코코</code> <code>[고코코</code> <code>[놉코코</code> <code>[넵코코</code>
+      </div>
+      <p>각 문구 뒤의 <b>코코</b>를 <b>코</b>로 줄이거나 생략해도 됩니다. <code>[굳</code> = <code>[굳코</code> = <code>[굳코코</code>. 점 접두사도 동일합니다.</p>
+    </details>
+    <details class="kw-group" open>
+      <summary>모코콩콘 <span class="count">17종 · 움직이는 이모티콘</span></summary>
+      <div class="kw-chips">
+        <code>[감사콩</code> <code>[물줘콩</code> <code>[냠냠콩</code> <code>[촉촉콩</code> <code>[노래콩</code> <code>[꺼억콩</code> <code>[잘자콩</code> <code>[도망콩</code> <code>[츄릅콩</code> <code>[씨익콩</code> <code>[더줘콩</code> <code>[더줘콩2</code> <code>[뽕콩</code> <code>[빼꼼콩</code> <code>[저요콩</code> <code>[폭삭콩</code> <code>[굵자콩</code>
+      </div>
+    </details>
+    <details class="kw-group">
+      <summary>모코코콘 <span class="count">34종</span></summary>
+      <div class="kw-chips">
+        <code>[따봉</code> <code>[엄지</code> <code>[눈물</code> <code>[모야</code> <code>[익은</code> <code>[사랑</code> <code>[ㅋㅋ</code> <code>[크크</code> <code>[멘탈</code> <code>[물음</code> <code>[방긋</code> <code>[재</code> <code>[에</code> <code>[물끄럼</code> <code>[줘</code> <code>[안줘</code> <code>[안</code> <code>[슬픈</code> <code>[빠직</code> <code>[슬퍼</code> <code>[어때</code> <code>[엣큥</code> <code>[깜짝</code> <code>[짝</code> <code>[향기</code> <code>[모무룩</code> <code>[문열</code> <code>[외침</code> <code>[뜨거</code> <code>[시원</code> <code>[컷</code> <code>[힘내</code> <code>[화</code> <code>[귀여</code>
+      </div>
+    </details>
+    <details class="kw-group">
+      <summary>모코코콘 2 <span class="count">35종</span></summary>
+      <div class="kw-chips">
+        <code>[웃음</code> <code>[호에</code> <code>[호엥</code> <code>[좋아</code> <code>[응애</code> <code>[빛</code> <code>[하트</code> <code>[점프</code> <code>[잉</code> <code>[이잉</code> <code>[헤헷</code> <code>[묘한</code> <code>[히죽</code> <code>[두렵</code> <code>[침묵</code> <code>[선</code> <code>[선넘</code> <code>[모자</code> <code>[펀치</code> <code>[째릿</code> <code>[핥짝</code> <code>[못참</code> <code>[머쓱</code> <code>[스핀</code> <code>[거기</code> <code>[분노</code> <code>[뀨</code> <code>[죽은</code> <code>[멈춰</code> <code>[하지마</code> <code>[신나</code> <code>[흑흑</code> <code>[영차</code> <code>[템포</code> <code>[철퍼</code>
+      </div>
+    </details>
+    <details class="kw-group">
+      <summary>니나브콘 · 그 외 <span class="count">69종</span></summary>
+      <div class="kw-chips">
+        <code>[안녕</code> <code>[고마워</code> <code>[괜찮니</code> <code>[괜찮아</code> <code>[기쁨</code> <code>[너무기뻐</code> <code>[네가제일좋아</code> <code>[너도그래</code> <code>[가르쳐줄래</code> <code>[보고싶다</code> <code>[따뜻해</code> <code>[행복했으면</code> <code>[재미있어</code> <code>[좋은향기</code> <code>[발그레</code> <code>[밝음</code> <code>[윙크</code> <code>[훗</code> <code>[흥</code> <code>[응</code> <code>[앗</code> <code>[펑</code> <code>[별</code> <code>[땀</code> <code>[멍</code> <code>[zzz</code> <code>[비밀</code> <code>[안돼</code> <code>[어떡해</code> <code>[당황</code> <code>[침착</code> <code>[혼란스러워</code> <code>[이상해</code> <code>[끔찍</code> <code>[창백</code> <code>[잿빛</code> <code>[우울</code> <code>[울음</code> <code>[눈물바다</code> <code>[먹먹</code> <code>[삐이잉</code> <code>[느낌표</code> <code>[짝짝짝</code> <code>[무언의시선</code> <code>[백색물음표</code> <code>[사랑2</code> <code>[니사랑</code> <code>[니하트</code> <code>[니좋아</code> <code>[니신나</code> <code>[니야호</code> <code>[니헤헷</code> <code>[니슬퍼</code> <code>[니분노</code> <code>[니빠직</code> <code>[모험가쿤</code> <code>[니모험가쿤</code> <code>[욤이잉</code> <code>[욤뭐라구욤</code> <code>[욤몰라욤</code> <code>[욤매우분노</code> <code>[라일라이</code> <code>[템포따라</code> <code>[전혀성장</code> <code>[쓰담쓰담</code> <code>[냥바타</code> <code>[벚꽃모코코</code> <code>[늘푸른모코코</code> <code>[아기모코코</code>
+      </div>
+    </details>
+    <details class="kw-group">
+      <summary>기타 <span class="count">5종</span></summary>
+      <div class="kw-chips">
+        <code>[모코코</code> <code>[놀</code> <code>[털썩</code> <code>[버럭</code> <code>[뭐라</code>
+      </div>
+    </details>
+    <p class="section-desc" style="margin-top:20px">이모티콘 이미지는 저작권 보호를 위해 사이트에 게시하지 않아요. 실제 모습은 디스코드에서 확인해 주세요.</p>
+  </section>
+
+  <!-- ── 연동 ── -->
+  <section class="tab-panel" id="panel-link">
+    <h1 class="page">내 서버에 부르기</h1>
+    <p class="lead">포근해 길드 전용으로 만들었지만, 어느 디스코드 서버에서든 쓸 수 있어요. 별도 프로그램 설치 없이 서버에 초대해 주세요.</p>
+
+    <div class="cta-row">
+      <a class="btn-primary" href="https://discord.com/oauth2/authorize?client_id=YOUR_DISCORD_APPLICATION_ID&permissions=52224&scope=bot%20applications.commands">＋ 서버에 초대하기</a>
+      <span style="color:var(--text-dim); font-size:0.92rem;">디스코드 로그인 상태에서 서버를 고르면 끝이에요.</span>
+    </div>
+
+    <ol class="steps">
+      <li><div class="n">1</div><div><h3>봇 초대</h3><p>위 버튼을 눌러 서버를 선택합니다. 메시지 보내기 · 링크 임베드 · 파일 첨부 — 응답과 이모티콘을 올리는 데 필요한 최소 권한만 요청해요. (서버 관리 권한이 있어야 합니다)</p></div></li>
+      <li><div class="n">2</div><div><h3>쓸 채널 정하기 <small>선택</small></h3><p>특정 채널에서만 커맨드를 허용하려면 <b>서버 설정 → 연동 → 포근해용</b>에서 채널을 제한하세요. 이모티콘은 제한과 무관하게 어디서든 됩니다.</p></div></li>
+      <li><div class="n">3</div><div><h3>알림 켜기</h3><p>관리자가 원하는 채널에서 <code>/알림설정 켜기</code> 한 번. 매일 아침 8시 모험 섬, 수요일 업데이트 내역, 하루 4번 떠돌이 상인 출현(출현 10분 뒤 전체 판)이 그 채널로 갑니다.</p></div></li>
+      <li><div class="n">4</div><div><h3>각자 캐릭터 등록</h3><p>길드원이 <code>/등록</code> 하면 닉네임 없이 조회할 수 있고, <code>/랭킹</code> <code>/체급</code>에도 올라갑니다. <code>/도움말</code>로 전체 커맨드를 볼 수 있어요.</p></div></li>
+    </ol>
+
+    <div class="kakao-card">
+      <div class="title"><span>카카오톡 오픈채팅방</span><span class="soon">운영 중</span></div>
+      <p>길드 오픈채팅방에 포근해용 봇이 들어가 있어요. 디스코드 봇과 같은 로스트아크 공식 API로 답하므로 어느 쪽에서 물어봐도 같은 정보를 받습니다.</p>
+      <h3>이렇게 입력해요</h3>
+      <ul>
+        <li>디스코드에서 쓰던 커맨드를 <b><code>/</code> 또는 <code>.</code>으로 시작해서 그대로</b> 입력해요 — <code>/정보 닉네임</code> <code>.ㅂㅂㄱ 4000</code> <code>/모험섬</code> <code>/도움말</code>.</li>
+        <li>접두사 없이 되는 입력: 분배금(<code>ㅂㅂㄱ 4000</code>·<code>ㅂㅂㄱ 원한 8</code>)·경매금(<code>ㄱㅁㄱ 4000</code>·<code>ㄱㅁ 4000</code>)·비싼 유각(<code>ㅂㅆㅇㄱ [쪽]</code>)·경매장(<code>ㄱㅁㅈ 10겁</code>)·아크 그리드(<code>ㄱㄹㄷ 닉네임</code>)·재련(<code>ㄱㅎ 무기 18 20</code>)·출첵(<code>ㅊㅊ</code>)·출석현황(<code>ㅊㅊㅎㅎ</code>).</li>
+        <li>단독으로 보내면 되는 입력: 한마디(<code>한마디</code>·<code>ㅎㅁㄷ</code>)와 메뉴 추천(<code>ㅈㅁㅊ</code>).</li>
+        <li>둘 중 하나 고르기는 <code>낮잠조진다vs버텨</code>·<code>노트북 vs 컴퓨터</code>처럼 접두사 없이 보내거나 <code>.vs 낮잠조진다vs버텨</code>로 입력해요.</li>
+        <li>메뉴 추천은 <code>.점메추</code>·<code>.저메추</code>·<code>.ㅈㅁㅊ</code>로도 쓸 수 있어요. 그 밖의 초성에는 <code>/</code> 또는 <code>.</code>을 붙여 주세요.</li>
+        <li>카톡 닉네임이 캐릭터명이면 닉네임을 생략할 수 있고, 아니면 <code>/등록 캐릭터명</code> 한 번이면 됩니다.</li>
+      </ul>
+      <h3>카톡 전용 기능</h3>
+      <ul>
+        <li><b>출첵·출석현황·한마디는 카톡 전용</b>입니다. 출첵 기록은 방별·월별로 쌓이며 <code>/출석현황</code>에서 현재 방의 이번 달 순위표를 볼 수 있어요.</li>
+        <li>한마디는 사람마다 오늘 받은 본문이 겹치지 않게 전해요. 이미 겹친 당일 기록은 다음 호출에서 바꿔 드립니다. 기존 <code>/한마디</code>·<code>.ㅎㅁㄷ</code>도 쓸 수 있어요.</li>
+        <li><b>입장 환영은 연결 확인 후 켜집니다.</b> 등록된 방의 입장을 확인하면 <code>닉네임님 "방 이름"에 어서오세요!</code>와 <code>즐거운 길드 생활 되세요!</code>를 두 줄로 전합니다. 「포」 방의 환영 인사에는 「포근해」로 표시합니다. 다시 들어오면 다음 메시지에 직전 입장 때의 이름과 한국 시간 날짜·시각도 알려드려요. 이름이 같은 다른 사람의 기록은 구분하며, 기능 연결 후 확인한 입장부터 봇 휴대전화 안에 보관합니다. 휴대전화 초기화·봇 앱 삭제 시 별도 백업이 없는 기록은 사라집니다.</li>
+      </ul>
+      <h3>결과는 이렇게 와요</h3>
+      <ul>
+        <li><code>/정보 닉네임</code>은 돌·각인·카드, 주요 능력치와 수집품에 장비 등급·재련 단계·품질, 아이템 레벨과 평균 품질까지 <b>한 메시지로 묶어</b> 보여드립니다. 캐릭터 미리보기 카드가 함께 옵니다.</li>
+        <li><code>/팔찌</code>·<code>/랭킹</code>·<code>/체급</code>은 카톡 전용 양식으로 읽기 편하게 정리했습니다. <code>/랭킹</code>·<code>/체급</code>은 디스코드·카톡에서 <code>/등록</code>한 길드원을 한 판에 보여 줘요.</li>
+        <li>순위판은 길어도 <b>메시지 하나</b>에 담겨 카톡의 <b>전체보기</b>로 펼쳐 읽을 수 있어요. 아주 긴 결과는 주소로 바꾸지 않고 <b>본문을 줄 단위로 줄인 뒤 끝에 <code>…</code></b>를 붙입니다.</li>
+        <li>전체 보기 <b>링크</b>는 <code>/도움말</code>과 <code>/스펙업</code>의 나머지 항목에만 남아 있으며, 그 링크는 30분간 유효하고 서버 재시작 시에도 만료됩니다.</li>
+        <li>캐릭터 이미지·차트·이모티콘은 미리보기 카드로 옵니다.</li>
+      </ul>
+      <h3>분배금·경매금에 각인서 이름 쓰기</h3>
+      <ul>
+        <li><code>/분배금 원한</code>·<code>.분배금 저주받은 인형 8</code>처럼 금액 대신 각인서명을 입력할 수 있습니다. 유물 등급의 권당 현재 최저가를 적용하고, 계산 결과에는 정식 각인서 이름과 시세를 함께 표시합니다.</li>
+        <li><code>ㅂㅂㄱ 예둔 8</code>·<code>/분배금 결대</code>처럼 예둔·저받·아드·돌대·결대 등의 줄임말도 지원합니다. 결대는 결투의 대가로 조회하며, 기존 정식 이름도 그대로 사용할 수 있습니다.</li>
+        <li><code>ㅂㅂㄱ 질량증가</code>·<code>/분배금 저주받은인형 8</code>처럼 띄어쓰기 없이 적어도 정식 품명으로 찾아 계산합니다.</li>
+        <li>인원을 생략하면 4/8/16인을 모두 표시하며, 이름이나 현재 가격을 확인할 수 없으면 계산 대신 안내합니다.</li>
+        <li><code>/경매금</code>·<code>.경매금</code>과 접두사 없는 <code>ㄱㅁㄱ</code>은 <code>/분배금</code>과 같은 계산기입니다.</li>
+      </ul>
+      <h3>알아 두세요</h3>
+      <ul>
+        <li>봇은 <b>등록된 오픈채팅방에서만</b> 답하고, 한 번에 나가는 답의 수와 길이에 상한이 있어 방이 덮이지 않습니다.</li>
+        <li>아침 알림은 디스코드에서만 받을 수 있어요. 수요일 자동 공지는 카카오톡으로 먼저 보내지 않으니 <code>.업뎃</code>으로 확인해 주세요.</li>
+        <li>자세한 사용법은 <a href="updates/v1.3.html">v1.3 노트</a>에 있습니다.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn-kakao" href="https://example.invalid/community" target="_blank" rel="noopener">💬 봇 오픈프로필</a>
+        <small>답변은 <b>등록된 길드 오픈채팅방에서만</b> 옵니다 — 1:1 채팅에서는 답하지 않아요. 프로필은 봇 계정을 확인하거나 방에 초대할 때 사용해 주세요.</small>
+      </div>
+    </div>
+
+    <div class="cards tight">
+      <div class="card"><h3>초대하고 바로 이용</h3><p>서버에 봇을 초대한 뒤 <code>/도움말</code>로 시작해 보세요. <code>/등록</code>으로 내 캐릭터를 연결할 수 있어요.</p></div>
+      <div class="card"><h3>24시간 가동</h3><p>봇은 하루 종일 켜져 있어요. 오류로 멈추거나 서버가 정기적으로 다시 시작돼도 곧 자동으로 돌아옵니다.</p></div>
+      <div class="card"><h3>공식 API</h3><p>캐릭터와 시세는 로스트아크 오픈 API에서 실시간으로 가져옵니다.</p></div>
+    </div>
+
+    <div class="note">
+      <div class="title">길드 일정은 홈페이지에서</div>
+      <p><a href="account.html">로그인·가입</a>에서 카카오 또는 디스코드 계정으로 로그인하고 대표 캐릭터 소유 인증을 마친 뒤 가입을 신청해 주세요. 운영진의 최종 승인 후 <a href="guild.html">우리 길드</a>에서 일정표를 열고, 빈 입력칸에 내 일정을 작성해 바로 저장할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <!-- ── 업데이트 ── -->
+  <section class="tab-panel" id="panel-updates">
+    <h1 class="page">업데이트</h1>
+    <p class="lead">카드를 누르면 그 버전의 자세한 노트로 넘어갑니다. <a href="updates.html">전체 노트 보기 →</a></p>
+
+    <div class="releases">
+      <a class="release latest" href="updates/v1.4.html">
+        <div class="head"><span class="ver">v1.4</span><span class="badge">최신</span></div>
+        <p class="summary">시장·도구에 장비 강화 탭이 생겨 숨결·책을 가장 싸게 넣는 방법과 재료별 소모량·회차별 계획을 볼 수 있습니다. 숙제표 저장과 원정대 환산 가치·티어 표시를 보완하고, 카카오톡 도움말과 입장 환영 기록 보관 안내를 정리했습니다. 「포」 방의 환영 인사에는 「포근해」로 표시합니다. <code>/챗</code>·둘 중 하나 고르기·메뉴 추천·한마디의 인공지능 답변 모델을 최신 세대로 바꿨습니다.</p>
+        <div class="chips"><span>장비 강화 탭</span><span>재료별 소모량</span><span>회차별 계획</span><span>숙제표 저장 보완</span><span>환산 가치 갱신</span><span>카톡 도움말 정정</span></div>
+      </a>
+      <a class="release" href="updates/v1.3.html">
+        <div class="head"><span class="ver">v1.3</span></div>
+        <p class="summary">숨결·책을 가장 싸게 넣는 재련 계산기와 캐릭터 화면의 스펙업 탭이 들어왔습니다. 캐릭터 화면은 열 단계 티어와 새 디자인으로 바뀌었고, 원정대 환산 가치와 팔찌 조회가 더 정확해졌습니다.</p>
+        <div class="chips"><span>/강화 재련 계산기</span><span>스펙업 탭</span><span>10단계 티어</span><span>/체급 갱신</span><span>팔찌 자동 조회</span><span>.팔찌 치특 검색</span><span>챗 · 메뉴 추천</span></div>
+      </a>
+      <a class="release" href="updates/v1.2.html">
+        <div class="head"><span class="ver">v1.2</span></div>
+        <p class="summary">홈페이지에서 가입·길드원 인증 후 일정 시트를 볼 수 있습니다. 생일 모코코 6종을 추가하고, 이모티콘은 대괄호·점 접두사와 짧은 이름을 지원합니다. 카톡 미리보기는 전체 그림이 보이도록 개선했습니다. 카톡 출석 기록이 실제 방에 연결되도록 수정했습니다.</p>
+        <div class="chips"><span>홈페이지 가입</span><span>길드원 자동 확인</span><span>이모티콘 미리보기</span></div>
+      </a>
+      <a class="release" href="updates/v1.1.html">
+        <div class="head"><span class="ver">v1.1</span></div>
+        <p class="summary">길드원끼리 비교하는 랭킹 두 종이 들어왔고, 수요일 업데이트 공지가 자동으로 채널에 올라옵니다.</p>
+        <div class="chips"><span>/랭킹 길드 내 스펙 랭킹</span><span>/체급 원정대 체급 랭킹</span><span>업데이트 공지 자동 알림</span><span>/cpm</span><span>이모티콘 160종</span></div>
+      </a>
+      <a class="release" href="updates/2026-08-31.html">
+        <div class="head"><span class="ver">기능</span></div>
+        <p class="summary">스펙 요약과 치적, 딜지분, 악세 시세 검색까지 캐릭터를 뜯어보는 커맨드가 대거 추가됐습니다.</p>
+        <div class="chips"><span>/정보</span><span>/치적</span><span>/딜지분 · /딜컷</span><span>악세 연마 조합 시세</span><span>후속 조회 버튼</span></div>
+      </a>
+      <a class="release" href="updates/v0.1.html">
+        <div class="head"><span class="ver">v0.1</span></div>
+        <p class="summary">기본 커맨드 7종으로 시작해 캐릭터 조회와 시세, 게임 정보 커맨드를 갖췼고 24시간 운영을 시작했습니다.</p>
+        <div class="chips"><span>첫 공개</span><span>캐릭터 조회 전면 구축</span><span>/스킬코드</span><span>모험섬 아침 알림</span><span>홈페이지 오픈</span></div>
+      </a>
+    </div>
+
+    <div class="note" style="margin-top:32px">로스트아크 정기 업데이트 내역은 봇이 알림 채널로 자동 발송합니다. 직접 볼 때는 <code>/업데이트</code>.</div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <span>포근해용 · MIT License</span>
+      <a href="terms.html">이용약관</a>
+      <a href="privacy.html">개인정보처리방침</a>
+      <span>문의: <a href="mailto:maintainer@example.com">maintainer@example.com</a></span>
+    </div>
+    <p class="fine">데이터 출처: 로스트아크 오픈 API — 본 사이트는 Smilegate RPG와 무관한 팬 프로젝트입니다. 이모티콘 이미지는 원작자에게 저작권이 있습니다.</p>
+  </div>
+</footer>
+
+
+<script>
+  const buttons = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  document.querySelector('.skip-link').addEventListener('click', (event) => {
+    event.preventDefault();
+    document.getElementById('main-content').focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+
+  function showTab(name) {
+    const target = document.getElementById('panel-' + name);
+    if (!target) return false;
+    buttons.forEach((b) => {
+      const active = b.dataset.tab === name;
+      b.classList.toggle('active', active);
+      if (active) b.setAttribute('aria-current', 'page');
+      else b.removeAttribute('aria-current');
+    });
+    document.dispatchEvent(new CustomEvent('site:navigate', { detail: name }));
+    panels.forEach((p) => p.classList.toggle('active', p === target));
+    return true;
+  }
+
+  // 탭 버튼과 본문 안의 탭 이동 버튼(커맨드 둘러보기) 모두 같은 동작
+  document.querySelectorAll('[data-tab]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      showTab(btn.dataset.tab);
+      history.replaceState(null, '', '#' + btn.dataset.tab);
+      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    });
+  });
+
+  // 주소의 #탭이름과 화면을 동기화한다 (예: index.html#updates).
+  // 페이지 로드 시는 물론, 열려 있는 상태에서 해시만 바뀌어도 (뒤로가기 포함) 반영되도록
+  // hashchange 이벤트를 함께 처리한다.
+  function syncFromHash() {
+    const name = location.hash.slice(1);
+    if (!name || !showTab(name)) showTab('intro');
+  }
+  window.addEventListener('hashchange', syncFromHash);
+  syncFromHash();
+</script>
+
+</body>
+</html>

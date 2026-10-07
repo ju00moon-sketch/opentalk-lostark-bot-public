@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08111d">
+<meta name="robots" content="noindex">
+<meta name="description" content="내 원정대 캐릭터의 일일·주간 숙제와 레이드 진행을 한 화면에서 확인하세요.">
+<title>숙제표 — 포근해용</title>
+<script src="theme.js"></script>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="renewal.css">
+<link rel="stylesheet" href="todo.css">
+<script src="renewal.js" defer></script>
+<script src="auth.js" defer></script>
+<script src="todo.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">본문 바로가기</a>
+<header data-site-header data-active="todo"></header>
+<main class="todo-layout" id="main-content" tabindex="-1" data-site-feature="todo" data-site-access="locked">
+  <section class="todo-head">
+    <div class="todo-head-copy">
+      <p class="account-eyebrow">WEEKLY HOMEWORK</p>
+      <h1>숙제표</h1>
+      <p id="todo-period" class="todo-lead">내 원정대 캐릭터의 일일·주간 숙제를 확인하고 있어요.</p>
+    </div>
+    <div class="todo-head-actions">
+      <button id="todo-auto" class="quiet-button" type="button">자동 선정</button>
+      <button id="todo-pick" class="quiet-button" type="button">캐릭터 고르기</button>
+      <button id="todo-refresh" class="quiet-button" type="button">새로고침</button>
+    </div>
+  </section>
+  <p id="todo-status" class="account-status" role="status" aria-live="polite">로그인과 가입 상태를 확인하고 있어요.</p>
+
+  <section id="todo-picker" class="todo-picker" aria-labelledby="picker-title" hidden>
+    <div class="section-heading"><div><p class="account-eyebrow">MY ROSTER</p><h2 id="picker-title" tabindex="-1">표에 올릴 캐릭터</h2></div><span id="todo-picker-count" class="section-description"></span></div>
+    <div id="todo-roster" class="todo-roster"></div>
+    <div class="todo-picker-actions">
+      <button id="todo-save" class="home-button" type="button">이 캐릭터로 표 만들기</button>
+      <button id="todo-cancel" class="quiet-button" type="button">닫기</button>
+    </div>
+  </section>
+
+  <section id="todo-summary" class="todo-summary" aria-label="이번 주 요약" hidden>
+    <dl class="todo-metrics">
+      <div><dt>표에 올린 캐릭터</dt><dd><span id="todo-count">—</span><small>명</small></dd></div>
+      <div><dt>오늘 남은 일일 숙제</dt><dd><span id="todo-daily-left">—</span><small>칸</small></dd></div>
+      <div><dt>이번 주 레이드 골드</dt><dd><span id="todo-gold">—</span><small>G</small></dd></div>
+    </dl>
+  </section>
+
+  <div id="todo-board" class="todo-board"></div>
+  <p id="todo-note" class="dashboard-caption"></p>
+</main>
+<footer class="account-footer"><span>포근해용</span><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="account.html">내 계정</a></footer>
+</body>
+</html>

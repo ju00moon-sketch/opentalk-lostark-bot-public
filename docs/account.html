@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08111d">
+<meta name="robots" content="noindex">
+<title>내 계정 — 포근해용</title>
+<script src="theme.js"></script>
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="renewal.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="account-realm.css">
+<script src="renewal.js" defer></script>
+<script src="onboarding.js" defer></script>
+<script src="member-characters.js" defer></script>
+<script src="auth.js" defer></script>
+</head>
+<body data-account-page>
+<a class="skip-link" href="#main-content">본문 바로가기</a>
+<header data-site-header data-active="account"></header>
+<main class="account-layout" id="main-content" tabindex="-1">
+  <section class="account-intro">
+    <div class="account-identity" aria-hidden="true"><img src="assets/pogeun-sprout-logo.png" width="56" height="56" alt=""><div><strong>포근해용</strong><span>POGEUNHAEYONG</span></div></div>
+    <p class="account-tagline">언제나, 더 멀리<br>함께하는 모험</p>
+    <div class="account-intro-copy">
+      <h1>함께할 모험을<br>준비하세요.</h1>
+      <p>내 캐릭터를 등록하고,<br>길드원과 다음 일정을 함께하세요.</p>
+      <p class="account-caps" aria-hidden="true">A GREATER ADVENTURE TOGETHER</p>
+      <div class="account-intro-links"><a href="spec.html">캐릭터 조회 <span aria-hidden="true">›</span></a><a href="guild.html">길드 일정 (승인 회원) <span aria-hidden="true">›</span></a></div>
+    </div>
+    <p class="account-quote">"좋은 사람들이 만드는,<br>더 특별한 모험의 시작."</p>
+  </section>
+  <section class="account-card" aria-labelledby="account-title">
+    <h2 id="account-title">로그인</h2>
+    <p id="auth-status" class="account-status" role="status" aria-live="polite">로그인 상태를 확인하고 있어요.</p>
+    <div id="signed-out" hidden>
+      <div class="provider-buttons">
+        <button id="login-discord" class="provider-button discord-button" type="button" disabled>디스코드로 로그인</button>
+        <button id="login-kakao" class="provider-button kakao-button" type="button" aria-describedby="kakao-readiness" disabled>카카오로 로그인</button>
+        <p id="kakao-readiness" class="provider-readiness">카카오 로그인은 준비 중입니다.</p>
+      </div>
+      <p class="account-help">로그인한 뒤 캐릭터를 등록하고 소유 인증을 진행해 주세요. 가입 신청을 운영진이 최종 승인하면 캐릭터·시장·길드 기능을 이용할 수 있어요.<br>디스코드와 카카오 계정은 각각 별도로 사용하며 자동으로 합치지 않아요.</p>
+      <p class="account-privacy" id="account-policy-notice">가입 전에 <a href="terms.html">이용약관</a>과 <a href="privacy.html">개인정보처리방침</a>을 확인해 주세요.</p>
+      <p class="account-policy-detail">계정 ID와 표시 이름, 계정 생성·로그인 시각을 저장합니다. 신청한 대표 캐릭터와 소유 인증 결과, 가입 승인 상태도 저장합니다. 기존에 설정한 홈페이지 닉네임은 유지합니다.</p>
+    </div>
+    <div id="signed-in" hidden>
+      <div class="account-member-summary">
+        <div class="member-avatar" aria-hidden="true">✦</div>
+        <div class="account-member-identity"><h3 id="member-name"></h3><p id="member-provider" class="account-help"></p><p id="member-character" class="account-help" hidden></p></div>
+        <details class="account-settings">
+          <summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 3-1 3-3 1 1 3-2 2 2 2-1 3 3 1 1 3h6l1-3 3-1-1-3 2-2-2-2 1-3-3-1-1-3Z"/><circle cx="12" cy="12" r="3"/></svg>계정 설정</summary>
+          <div class="account-settings-body">
+            <p id="member-name-help" class="account-help">이름을 바꾸려면 로그인한 서비스에서 변경한 뒤 다시 로그인해 주세요.</p>
+            <div class="member-actions">
+              <button id="logout" class="quiet-button" type="button">로그아웃</button>
+            </div>
+            <button id="delete-account" class="delete-link" type="button">회원 탈퇴</button>
+            <div id="reauthentication" class="account-reauth" hidden>
+              <p>계정을 보호하기 위해 본인 확인이 필요해요. 같은 계정으로 다시 로그인한 뒤 회원 탈퇴를 선택해 주세요.</p>
+              <button id="reauthenticate" class="quiet-button" type="button">다시 로그인하기</button>
+            </div>
+          </div>
+        </details>
+      </div>
+      <section id="account-guild" class="account-guild account-onboarding" aria-labelledby="membership-title" hidden>
+        <div class="account-section-head"><h3 id="membership-title">포근해용 이용 신청</h3><a class="quiet-button account-guide-link" href="updates/v1.3.html">이용 가이드</a></div>
+        <ol id="onboarding-steps" class="onboarding-steps" aria-label="가입 진행 단계"><li><span class="account-step-mark" aria-hidden="true"></span>캐릭터 선택</li><li><span class="account-step-mark" aria-hidden="true"></span>소유 인증</li><li><span class="account-step-mark" aria-hidden="true"></span>가입 신청</li><li><span class="account-step-mark" aria-hidden="true"></span>운영진 승인</li></ol>
+        <div class="account-membership-summary"><p id="membership-status" class="membership-status" role="status" aria-live="polite"></p><p id="membership-description" class="account-help"></p></div>
+        <form id="ownership-character-form">
+          <label for="ownership-character-name">인증할 캐릭터명</label>
+          <input id="ownership-character-name" type="text" required minlength="2" maxlength="12" pattern="[가-힣a-zA-Z0-9]{2,12}" autocomplete="off" spellcheck="false" aria-describedby="ownership-character-help">
+          <p id="ownership-character-help" class="account-help">본인이 사용하는 캐릭터명을 입력해 주세요.</p>
+          <button id="ownership-search" class="home-button" type="submit">캐릭터 찾기</button>
+        </form>
+        <div id="ownership-character-profile" class="signup-preview" hidden></div>
+        <section id="ownership-proofs" class="guild-verification" aria-labelledby="ownership-proof-title" hidden>
+          <h4 id="ownership-proof-title">캐릭터 소유 인증</h4>
+          <p id="ownership-guide-progress" class="ownership-guide-progress" role="status" aria-live="polite"></p>
+          <div data-ownership-step="0">
+            <div class="ownership-diagram" aria-hidden="true"><span>내 캐릭터</span><b>↔</b><span>STOVE 프로필</span></div>
+            <p class="account-help">내 STOVE 프로필에 인증 코드를 잠시 등록해 캐릭터의 소유자를 확인합니다. 인증 후에는 소개에서 코드를 지워도 괜찮아요.</p>
+            <button id="ownership-guide-start" class="home-button" type="button">인증 시작하기</button>
+          </div>
+          <div data-ownership-step="1" hidden>
+            <h5>내 STOVE 프로필에 접속해 주세요</h5>
+            <p class="account-help">STOVE 런처 오른쪽 위의 내 프로필에서 프로필 페이지를 열 수 있어요. 웹에서도 같은 계정으로 접속할 수 있습니다.</p>
+            <a class="home-button ownership-profile-link" href="https://profile.onstove.com/ko" target="_blank" rel="noopener noreferrer">STOVE 프로필 열기 <span class="sr-only">(새 탭)</span></a>
+            <a class="ownership-launcher-help" href="https://profile.onstove.com/ko" target="_blank" rel="noopener noreferrer">지금은 런처 사용이 어려워요 <span class="sr-only">(새 탭)</span></a>
+            <button id="ownership-guide-opened" class="home-button" type="button">접속했어요</button>
+          </div>
+          <form id="ownership-url-form" data-ownership-step="2" hidden>
+            <h5>내 프로필 주소를 알려 주세요</h5>
+            <label for="ownership-profile-url">STOVE 프로필 주소</label>
+            <input id="ownership-profile-url" type="url" required maxlength="2048" placeholder="https://profile.onstove.com/..." autocomplete="off" spellcheck="false">
+            <p class="account-help">내 프로필 페이지의 주소를 복사해 붙여 넣어 주세요.</p>
+            <button id="ownership-url-next" class="home-button" type="submit">주소 확인</button>
+          </form>
+          <form id="ownership-verify-form" data-ownership-step="3" hidden>
+            <h5>프로필 소개에 코드를 저장해 주세요</h5>
+            <ol class="ownership-instructions"><li>내 프로필의 설정(톱니 모양)을 열어 주세요.</li><li>소개에 아래 인증 코드를 붙여 넣어 주세요.</li><li>변경 내용을 저장한 뒤 이 페이지로 돌아와 주세요.</li></ol>
+            <label for="ownership-code">프로필 소개에 넣을 인증 코드</label>
+            <input id="ownership-code" class="ownership-code" type="text" readonly spellcheck="false">
+            <button id="ownership-copy" class="quiet-button" type="button">인증 코드 복사</button>
+            <p id="ownership-expiry" class="account-help"></p>
+            <button id="ownership-renew" class="quiet-button" type="button">코드 다시 발급</button>
+            <p id="ownership-selected-url" class="account-help"></p>
+            <button id="ownership-guide-address" class="quiet-button" type="button">프로필 주소 수정</button>
+            <button id="ownership-verify" class="home-button" type="submit">설정했어요 · 인증 확인</button>
+          </form>
+          <button id="ownership-guide-back" class="quiet-button ownership-guide-back" type="button" hidden>이전 단계</button>
+          <div id="ownership-discord" class="ownership-alternative" hidden><p class="account-help">KOR Lost ARK에서 인증한 디스코드 계정은 추가 동의로 소유 인증을 진행할 수도 있어요. 인증을 마친 뒤 가입 신청을 별도로 보내 주세요.</p><button id="ownership-discord-start" class="quiet-button" type="button">디스코드로 소유 인증</button></div>
+        </section>
+        <form id="guild-application" hidden>
+          <p id="membership-character" class="account-help"></p>
+          <p class="account-help">캐릭터 소유 인증을 마쳤어요. 이용 신청을 보내면 운영진이 최종 승인합니다.</p>
+          <button id="apply-guild" class="home-button" type="submit">이 캐릭터로 가입 신청</button>
+        </form>
+        <p id="application-status" class="account-status" role="status" aria-live="polite"></p>
+        <button id="ownership-retry" class="quiet-button" type="button" hidden>가입 상태 다시 확인</button>
+      </section>
+      <section id="member-characters" class="member-characters" aria-labelledby="member-characters-title" hidden>
+        <div class="member-characters-heading"><h3 id="member-characters-title">대표 캐릭터</h3><button id="member-characters-reload" class="quiet-button" type="button">목록 새로고침</button></div>
+        <p class="account-help">인증한 계정의 캐릭터 중 홈페이지에서 사용할 대표 캐릭터를 선택해 주세요.</p>
+        <p id="representative-character" class="representative-character" hidden></p>
+        <p id="member-characters-status" class="account-status" role="status" aria-live="polite"></p>
+        <form id="member-characters-form" hidden>
+          <div id="member-characters-groups" class="member-characters-groups"></div>
+          <button id="member-characters-save" class="home-button" type="submit" disabled>대표 캐릭터로 설정</button>
+        </form>
+      </section>
+      <p class="account-help">봇의 출석·캐릭터 등록 기록과 홈페이지 계정은 별도로 관리합니다.</p>
+      <div class="account-page-actions"><a id="account-guild-link" class="quiet-button" href="guild.html">길드 페이지로 이동 <span aria-hidden="true">›</span></a></div>
+    </div>
+    <button id="auth-retry" class="quiet-button" type="button" hidden>다시 확인하기</button>
+    <noscript><p>로그인하려면 브라우저에서 JavaScript를 사용할 수 있어야 합니다.</p></noscript>
+  </section>
+</main>
+<dialog id="delete-dialog" class="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+  <h2 id="delete-title">회원 탈퇴하시겠어요?</h2>
+  <p id="delete-description">이 홈페이지의 계정 정보, 길드 가입 신청·승인 상태·관리자 권한과 모든 로그인 세션을 삭제합니다. 삭제한 정보는 복구할 수 없으며, 다시 가입하면 길드 승인을 새로 받아야 해요. 디스코드 서버 가입 상태와 봇의 출석·캐릭터 등록 기록은 변경되지 않습니다.</p>
+  <p>일정표에 작성한 내용은 남습니다. 내용까지 삭제하려면 탈퇴 전에 직접 지우거나 운영진에게 요청해 주세요.</p>
+  <p id="delete-provider-note"></p>
+  <div class="member-actions">
+    <button id="cancel-delete" class="quiet-button" type="button">취소</button>
+    <button id="confirm-delete" class="delete-button" type="button">탈퇴하고 정보 삭제</button>
+  </div>
+</dialog>
+<footer class="account-footer"><span>포근해용</span><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="mailto:maintainer@example.com">문의하기</a></footer>
+</body>
+</html>

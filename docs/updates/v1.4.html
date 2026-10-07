@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08111d">
+<script src="../theme.js"></script>
+<link rel="preload" href="../assets/fonts/body-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../updates.css">
+<title>v1.4 장비 강화 탭과 회원 기능 보완 — 포근해용 업데이트 노트</title>
+<meta name="description" content="포근해용 v1.4 업데이트 노트 — 장비 강화 탭과 재련 상세 계산, 숙제표 저장·원정대 환산 가치 보완, 카카오톡 도움말 안내 정정.">
+<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../renewal.css">
+<script src="../renewal.js" defer></script>
+<script src="../auth.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">본문 바로가기</a>
+
+<header data-site-header data-active="updates"></header>
+<section class="updates-intro">
+  <div class="wrap">
+    <div class="nav-row">
+      <a class="back" href="../index.html#updates">← 포근해용 홈으로</a>
+      <a class="back" href="../updates.html">전체 노트 보기 →</a>
+    </div>
+    <h1>업데이트 <span class="accent">노트</span></h1>
+    <p class="lead">v1.4 · 장비 강화 탭과 회원 기능 보완</p>
+  </div>
+</section>
+
+<main class="wrap" id="main-content" tabindex="-1">
+
+  <article class="release" id="v1-4">
+    <div class="release-head">
+      <h2><span class="ver">v1.4</span> 장비 강화 탭과 회원 기능 보완</h2>
+    </div>
+    <p class="summary">시장·도구에 <b>장비 강화</b> 탭이 생겨 숨결·책을 가장 싸게 넣는 방법과 재료별 소모량·회차별 계획을 볼 수 있습니다. 숙제표 저장과 원정대 환산 가치·티어 표시를 보완하고, 카카오톡 도움말의 입력 안내와 <code>/스펙업</code> 계산 기준 안내를 바로잡았습니다. 입장 환영에 쓰는 기록의 휴대전화 보관 방식도 안내합니다.</p>
+
+    <h3>디스코드</h3>
+    <ul>
+      <li><b>인공지능 답변 모델 교체</b> — <code>/챗</code> 질문 답변, 둘 중 하나 고르기 코멘트, <code>/점메추</code>·<code>/저메추</code> 메뉴 추천에 쓰는 OpenAI 모델을 최신 세대로 바꿨습니다. 사용법은 그대로입니다.</li>
+      <li><b><code>/스펙업</code> 쿨감 보석 계산 기준 안내</b> — 작열(쿨감) 보석이 후보에 있으면 계산 기준에 「쿨감 보석은 스킬을 쿨타임마다 쓴다고 가정」을 함께 적습니다. 그 스킬을 쿨타임마다 쓰지 않는다면 실제 상승은 표시보다 작을 수 있어요.</li>
+      <li><b>원정대 환산 가치 갱신 보완</b> — 팔찌나 아크그리드 젬만 바꿔도 <code>/환산가치</code>의 원정대 환산 가치에 반영됩니다. 자동 갱신은 인원이 많아도 빠지는 길드원 없이 차례로 다시 계산하고, 일부 시세를 확인하지 못한 날에도 이미 세운 최고 기록은 지워지지 않아요.</li>
+      <li><b>티어 표시 보정</b> — 로펙 순위는 있는데 상위 % 값이 비어 있을 때 최고 티어(에스더)로 잘못 표시되던 것을 고쳤습니다. <code>/포펙</code>과 홈페이지 캐릭터 화면에 같이 적용됩니다.</li>
+    </ul>
+
+    <h3>카카오톡</h3>
+    <ul>
+      <li><b>인공지능 답변 모델 교체</b> — 디스코드와 같이 <code>/챗</code>, 둘 중 하나 고르기, 메뉴 추천에 쓰는 모델을 최신 세대로 바꿨습니다. 카카오톡 전용 <code>/한마디</code>도 같은 최신 세대 모델로 만듭니다.</li>
+      <li><b>입장 환영 방 이름 정정</b> — 「포」 방의 환영 인사에는 방 이름을 「포근해」로 표시합니다. 「포근운수 2호점」의 표기는 그대로입니다.</li>
+      <li><b>입장 환영 연결과 기록 보관</b> — 휴대전화의 입장 수신 연결을 보완했습니다. 재입장 안내에 쓰는 직전 입장 이름과 시각은 봇 휴대전화 안에 보관합니다. 같은 방의 같은 회원을 구분하며, 휴대전화를 초기화하거나 봇 앱을 삭제하면 별도 백업이 없는 기록은 사라집니다. 입장 환영은 연결을 확인한 등록 방에서만 켜며, 발신을 확인하지 못하면 추가 인사를 멈춥니다.</li>
+      <li><b>도움말 첫 화면 안내 정정</b> — <code>/도움말</code> 맨 앞의 「접두사 없이 쓸 수 있는 입력」에 재련(<code>ㄱㅎ 무기 18 20</code>), 단독으로 보내는 <code>ㅈㅁㅊ</code>, <code>낮잠vs버텨</code> 같은 비교를 더했습니다. 도움말 본문의 카카오톡 안내도 같게 맞췄어요.</li>
+      <li><b><code>/스펙업</code> 쿨감 보석 계산 기준 안내</b> — 디스코드와 같이, 작열(쿨감) 보석이 후보에 있으면 결과 아래 계산 기준에 쿨타임마다 쓴다는 가정을 함께 적습니다.</li>
+    </ul>
+
+    <h3>홈페이지</h3>
+    <ul>
+      <li><b>장비 강화 탭</b> — <b>시장·도구</b>의 재련 계산기를 분배금 계산기처럼 별도 <b>장비 강화</b> 탭으로 옮겼습니다. 탭이나 홈의 <b>#장비 강화</b>를 누르면 계산기가 바로 열리고, 뒤로 가기로 돌아올 수 있어요.</li>
+      <li><b>재련 계산 자세히 보기</b> — 장비 강화 탭에서 최악 비용(모든 단계에서 마지막 시도까지 간 경우)과 첫 시도 비용, 재료별 기대·최악 소모량과 비용, 단계마다 50%·90% 확률로 몇 번 안에 성공하는지를 보여 줍니다. 「재료와 회차 계획 보기」를 펼치면 회차별로 넣는 재료와 그때까지의 누적 비용을, 「단가와 시세 출처」에서는 계산에 쓴 개당 단가를 볼 수 있어요. 휴대폰에서도 읽기 쉽게 정리했습니다.</li>
+      <li><b>숙제표 저장 보완</b> — 숙제를 체크한 뒤 「캐릭터 고르기」 목록이 비던 문제와, 캐릭터 저장이 실패했는데 자동 선정이 다른 명단을 저장하던 문제를 고쳤습니다. 선택창을 연 채 체크해도 고르던 상태가 그대로 남고, 기준 인원보다 적게 고르면 레벨 높은 순으로 채운다는 안내가 나옵니다. 여러 칸을 빠르게 눌러도 누른 대로 저장되고, 저장하지 못한 체크는 화면에 남겨 두었다가 「새로고침」 때 다시 저장해요.</li>
+      <li><b>탈퇴하면 숙제표도 삭제</b> — 홈페이지 계정을 탈퇴하면 숙제표 기록도 함께 지워집니다.</li>
+      <li><b>출석판 인원</b> — 한 방의 출석 인원이 200명을 넘어도 출석판이 열리고, 순위는 200위까지 보여 드립니다.</li>
+      <li><b>팔찌 대체 시세 정확도</b> — 환산 가치에서 팔찌를 대체 매물로 값 매길 때, 조건에 맞지 않는 매물이 섞이지 않도록 한 번 더 확인합니다. 확인되지 않으면 그 팔찌는 「미확인」으로 남겨요.</li>
+      <li><b>캐릭터 화면 머리말</b> — 넓은 화면에서 결과 검색창이 메뉴를 가리던 문제를 고치고, 다른 화면과 같은 머리말로 맞췄습니다.</li>
+      <li><b>안내 정리</b> — 업데이트 탭을 누를 수 있는 카드로 바꾸고, 연동 탭의 카카오톡 안내를 항목별로 나눴습니다. 카카오톡 봇은 등록된 길드 오픈채팅방에서만 답한다는 점과 명령 개수(70개)를 실제와 맞췄습니다.</li>
+    </ul>
+  </article>
+
+  <nav class="pager" aria-label="이전 · 다음 글">
+    <a class="pager-item prev" href="v1.3.html"><span class="k">이전 글</span><span class="t">v1.3 · 홈페이지 리뉴얼과 채팅 기능 확장</span></a>
+    <span class="pager-item empty" aria-hidden="true"></span>
+  </nav>
+
+  <section class="board" aria-label="전체 업데이트 목록">
+    <div class="board-head">전체 업데이트</div>
+    <a class="row current" href="v1.4.html"><span class="badge">v1.4</span><span class="title">장비 강화 탭과 회원 기능 보완</span></a>
+    <a class="row" href="v1.3.html"><span class="badge">v1.3</span><span class="title">홈페이지 리뉴얼과 채팅 기능 확장</span></a>
+    <a class="row" href="v1.2.html"><span class="badge">v1.2</span><span class="title">카카오톡 오픈채팅방 연동</span></a>
+    <a class="row" href="v1.1.html"><span class="badge">v1.1</span><span class="title">길드원 랭킹 추가</span></a>
+    <a class="row" href="2026-08-31.html"><span class="badge">기능</span><span class="title">캐릭터 분석 확장</span></a>
+    <a class="row" href="v0.1.html"><span class="badge">v0.1</span><span class="title">첫 공개</span></a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>🌱 <a href="../index.html">포근해용 홈</a> · <a href="../updates.html">전체 업데이트 노트</a> · MIT License</p>
+  </div>
+</footer>
+
+</body>
+</html>

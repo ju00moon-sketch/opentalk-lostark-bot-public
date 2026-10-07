@@ -1,0 +1,51 @@
+node_modules/
+.env*
+!.env.example
+**/.env*
+!**/.env.example
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.log
+__pycache__/
+*.pyc
+.claude/
+.codex/
+.codex-remote-attachments/
+.mcp.json
+WORK_STATUS.md
+HANDOVER*
+specs/
+
+# 이모티콘 이미지: 공식 이미지 재배포 방지를 위해 공개 저장소에서 제외 (로컬/봇 서버에만 보관)
+assets/emoticons/*
+!assets/emoticons/README.md
+
+# 카카오 카드용 파생 이미지도 원본과 함께 비공개로 보관한다.
+assets/emoticon-previews/
+
+# Playwright MCP 테스트 잔여물
+.playwright-mcp/
+
+# 봇 런타임 상태 (서버별 알림 설정 · 유저-캐릭터 등록 · 마지막으로 확인한 공지 번호 · 전일 대비용 시세 기록)
+notify-channels.json
+user-links.json
+update-notify.json
+price-history.json
+crystal-price.json
+island-notify.json
+merchant-notify.json
+kakao-update-notify.json
+kakao-bridge-policy.json
+attendance.json
+quip-daily.json
+meal-daily.json
+*.json.bak
+*.json.tmp
+
+# 세션 운영 가이드 (서버 접속 정보 포함 — 공개 저장소 제외)
+CLAUDE.md
+
+# 공통 세션 운영 가이드 (서버 접속 정보 포함 — 공개 금지)
+AGENTS.md

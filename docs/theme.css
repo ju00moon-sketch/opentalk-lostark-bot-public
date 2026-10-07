@@ -1,0 +1,85 @@
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141b17;
+  --bg-card: #1c2720;
+  --bg-soft: #263329;
+  --border: #3f5243;
+  --border-strong: #67846c;
+  --text: #edf2e8;
+  --text-dim: #c4cfbd;
+  --text-muted: #aab9a3;
+  --accent: #a8d6a0;
+  --accent-soft: #314a35;
+  --green: #a8d6a0;
+  --theme-on-accent: #14261a;
+  --theme-accent-hover: #bddfb4;
+  --theme-danger: #f1aaa3;
+}
+
+.theme-picker { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; color: var(--text-dim); font: 500 .75rem/1.4 var(--body); white-space: nowrap; }
+.theme-picker select { box-sizing: border-box; min-height: 40px; max-width: 100%; padding: 8px 10px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg-card); color: var(--text); font: inherit; cursor: pointer; }
+.theme-picker select:hover { border-color: var(--accent); }
+.theme-picker select:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.theme-header-tools { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; }
+.nav-row.has-theme-picker { align-items: center; }
+.account-header.has-theme-picker { flex-wrap: wrap; gap: 16px 20px; }
+.account-header.has-theme-picker .account-brand { margin-right: auto; }
+.topbar-inner > .theme-picker { order: 0; }
+
+:root[data-theme="dark"] a:hover { color: var(--theme-accent-hover); }
+:root[data-theme="dark"] .topbar { background: #141b17f5; }
+:root[data-theme="dark"] #panel-intro > .cards > .card:first-child { background: #273b2d; border-color: #405b44; }
+:root[data-theme="dark"] #panel-intro > .cards > .card:nth-child(2) { background: #3b3626; border-color: #5c563c; }
+:root[data-theme="dark"] .cmd-row { border-bottom-color: var(--border); }
+:root[data-theme="dark"] .cmd-row:nth-child(even) { background: #202c24; }
+:root[data-theme="dark"] .cmd-row:hover { background: var(--bg-soft); }
+:root[data-theme="dark"] .kakao-card { background: #3c3420; border-color: #746538; }
+:root[data-theme="dark"] .kakao-card .title .soon { background: #544823; color: #f3de93; }
+:root[data-theme="dark"] .btn-kakao,
+:root[data-theme="dark"] .btn-kakao:hover { color: #392b16; }
+:root[data-theme="dark"] .btn-primary,
+:root[data-theme="dark"] .skip-link,
+:root[data-theme="dark"] .skip-link:focus,
+:root[data-theme="dark"] .skip-link:hover,
+:root[data-theme="dark"] .home-button,
+:root[data-theme="dark"] .guild-member-actions .review-approve,
+:root[data-theme="dark"] .schedule-tab[aria-selected="true"],
+:root[data-theme="dark"] .release .badge { color: var(--theme-on-accent); }
+:root[data-theme="dark"] .btn-primary:hover,
+:root[data-theme="dark"] .home-button:hover,
+:root[data-theme="dark"] .guild-member-actions .review-approve:hover { background: var(--theme-accent-hover); color: var(--theme-on-accent); border-color: var(--theme-accent-hover); }
+:root[data-theme="dark"] .account-status.error,
+:root[data-theme="dark"] #review-error,
+:root[data-theme="dark"] .schedule-editor-error { color: var(--theme-danger); }
+:root[data-theme="dark"] .guild-member-actions .review-caution { color: var(--theme-danger); border-color: #ad736c; }
+:root[data-theme="dark"] .delete-dialog::backdrop,
+:root[data-theme="dark"] .schedule-editor::backdrop { background: #040a07b3; }
+:root[data-theme="dark"] .contact-fab,
+:root[data-theme="dark"] .schedule-editor { box-shadow: 0 8px 32px #0005; }
+:root[data-theme="dark"] .schedule-viewport { scrollbar-color: var(--border-strong) var(--bg-soft); }
+
+/* Imported cell colors and conditional formatting retain their original meaning. */
+:root[data-theme="dark"] .schedule-grid {
+  color-scheme: light;
+  --bg-card: #fffefb;
+  --text: #263a2b;
+  --accent: #3d694b;
+  color: var(--text);
+}
+
+@media (max-width: 1100px) {
+  .topbar-inner.has-theme-picker { gap: 14px; }
+}
+@media (max-width: 860px) {
+  .topbar-inner > .theme-picker { order: 3; margin-left: auto; }
+  .topbar-inner.has-theme-picker > .invite-pill { order: 4; }
+  .topbar-inner.has-theme-picker > nav.tabs { order: 5; }
+}
+@media (max-width: 600px) {
+  .account-header.has-theme-picker { gap: 12px 16px; }
+  .account-header.has-theme-picker > .theme-picker { margin-left: auto; }
+  .nav-row.has-theme-picker > .theme-picker { margin-left: auto; }
+  .theme-picker { gap: 6px; }
+  .theme-picker select { min-height: 40px; }
+}

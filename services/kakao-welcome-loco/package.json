@@ -1,0 +1,15 @@
+{
+  "name": "opentalk-kakao-welcome-receiver",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node start.mjs"
+  },
+  "dependencies": {
+    "node-kakao": "git+https://github.com/Schwalbe262/node-kakao.git#a298d1215e1a822c503b8a11cca6cc74dd53d349"
+  }
+}

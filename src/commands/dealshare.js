@@ -1,0 +1,157 @@
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { DATA_DATE, RAID_CUTS } from '../data/raid-cuts.js';
+import {
+  resolveRaid, parseArgs, parseDamage, parseTime, computeGate, damageText, dpsText, timeText, shortName,
+} from '../dealshare.js';
+import { trunc, EMBED_COLOR, padDisplay } from '../format.js';
+
+export const data = new SlashCommandBuilder()
+  .setName('딜지분')
+  .setDescription('레이드 관문별 딜지분 컷과 내 기여도 판정')
+  .addStringOption((option) =>
+    option.setName('레이드').setDescription('예: 세나, 벨나, 성당3단계').setRequired(true),
+  )
+  .addIntegerOption((option) =>
+    option.setName('관문').setDescription('비우면 전체 관문').setMinValue(1).setMaxValue(3),
+  )
+  .addStringOption((option) =>
+    option.setName('피해량').setDescription('예: 2700억, 1조2000억 (단위 없으면 억)'),
+  )
+  .addStringOption((option) =>
+    option.setName('시간').setDescription('DPS 기준 시간 — 예: 10, 10:00 (비우면 관문 제한시간)'),
+  );
+
+const RAID_NOT_FOUND =
+  '레이드를 찾지 못했어요. 지원: `4막` `종막` `세르카` `성당` `벨가르딘` (예: `세나`, `벨하`, `성당3단계`)';
+const UNSUPPORTED_MSG =
+  '1~3막은 아직 지원하지 않아요. 현재 지원: `4막` `종막` `세르카` `성당` `벨가르딘`';
+
+// 슬래시 옵션과 채팅 인자를 같은 형태로 맞춘다.
+// 자유 형식 파서(parseArgs)는 "세나1관 2700억 10분"처럼 한 줄에 섞인 채팅 입력을 추측으로 가른다.
+// 이름을 붙여 준 슬래시 옵션(관문·피해량·시간)은 추측할 이유가 없으므로 그 뜻 그대로 덮어쓴다 —
+// 예전엔 값만 떼어 파서에 넘겨 "시간:5"가 무시되거나 "시간:10"이 10관문으로 읽혔다.
+function readInput(interaction, mode) {
+  const parsed = parseArgs([interaction.options.getString('레이드')], mode);
+
+  const gate = interaction.options.getInteger?.('관문');
+  if (gate != null) parsed.gate = gate;
+
+  // 사용자가 값을 적었는데 읽지 못하면 조용히 기본값으로 계산하지 않고 오류로 돌려준다 — 잘못된 값으로 낸 결과는 정상처럼 보여 더 해롭다.
+  const damage = interaction.options.getString('피해량');
+  if (damage) {
+    const plain = damage.replace(/,/g, '').trim();
+    const d = parseDamage(plain) ?? (/^[0-9]+(?:[.][0-9]+)?$/.test(plain) ? Number(plain) * 1e8 : null); // 단위 없으면 억
+    if (d === null) return { error: `피해량 \`${damage}\`을(를) 읽지 못했어요. 예: 2700억 · 1조2000억 · 2700(억 단위)` };
+    parsed.damage = d;
+  }
+
+  const time = interaction.options.getString('시간');
+  if (time) {
+    const s = parseTime(time);
+    if (s === null) return { error: `시간 \`${time}\`을(를) 읽지 못했어요. 예: 10 · 10:00 · 10분 · 10분30초 · 300초` };
+    parsed.seconds = s;
+  }
+
+  return parsed;
+}
+
+function gateField(entry, gate, parsed) {
+  const r = computeGate(entry, gate, parsed.damage, parsed.seconds);
+  const lines = [];
+
+  if (r.ratio != null) {
+    lines.push(
+      `내 딜 **${damageText(parsed.damage)}** / 기준 ${damageText(r.total)}`,
+      `딜지분 **${(r.ratio * 100).toFixed(1)}%** · ${dpsText(r.dps)} (${timeText(r.time)} 기준)`,
+      `예상 칭호 **${r.title}**`,
+      '',
+    );
+  } else {
+    const basis = r.time === gate.time ? '' : ` · DPS 기준 ${timeText(r.time)}`;
+    lines.push(`기준 피해량 **${damageText(r.total)}** · 제한 ${timeText(gate.time)}${basis}`);
+    lines.push('');
+  }
+
+  for (const cut of r.cuts) {
+    const label = padDisplay(`${cut.short} ${(cut.ratio * 100).toFixed(1)}%`, 12);
+    const base = `\`${label}\` ${damageText(cut.need)} · ${dpsText(cut.dps)}`;
+    if (r.ratio == null) {
+      lines.push(base);
+      continue;
+    }
+    const diff = parsed.damage - cut.need;
+    const mark = diff >= 0 ? '✅' : '❌';
+    lines.push(`${mark} ${base} (${diff >= 0 ? '+' : '-'}${damageText(Math.abs(diff))})`);
+  }
+
+  return {
+    name: `${gate.gate}관문 · ${gate.boss}`,
+    value: trunc(lines.join('\n')),
+  };
+}
+
+export async function run(interaction, mode) {
+  const parsed = readInput(interaction, mode);
+  if (parsed.error) {
+    await interaction.reply(parsed.error);
+    return;
+  }
+  const resolved = resolveRaid(parsed.raid);
+
+  if (!resolved) {
+    await interaction.reply(`\`${parsed.raid || '(없음)'}\` — ${RAID_NOT_FOUND}`);
+    return;
+  }
+  if (resolved.unsupported) {
+    await interaction.reply(UNSUPPORTED_MSG);
+    return;
+  }
+
+  // 난이도까지 특정되지 않았으면 난이도 목록을 먼저 보여 준다
+  if (!resolved.exact && resolved.entries.length > 1) {
+    const entry = resolved.entries[0];
+    const lines = resolved.entries.map((e) => {
+      const gates = e.gates
+        .map((g) => `${g.gate}관 ${damageText(computeGate(e, g, null).total)}`)
+        .join(' · ');
+      return `**${e.diff}** ${gates}`;
+    });
+    const embed = new EmbedBuilder()
+      .setColor(EMBED_COLOR)
+      .setTitle(`🗡️ ${entry.full} — 난이도별 기준 피해량`)
+      .setDescription(
+        `${lines.join('\n')}\n\n난이도까지 붙여서 다시 불러 주세요. 예: \`${shortName(resolved.entries.at(-1))}\``,
+      )
+      .setFooter({ text: `로아뷰 공개 딜컷 · ${DATA_DATE} 확인 · 잔혈 컷에서 역산한 참고 기준` });
+    await interaction.reply({ embeds: [embed] });
+    return;
+  }
+
+  const entry = resolved.entries[0];
+  const gates = parsed.gate == null
+    ? entry.gates
+    : entry.gates.filter((g) => g.gate === parsed.gate);
+  if (gates.length === 0) {
+    await interaction.reply(`\`${entry.key}\`는 ${entry.gates.length}관문까지 있어요.`);
+    return;
+  }
+
+  const embed = new EmbedBuilder()
+    .setColor(EMBED_COLOR)
+    .setTitle(
+      `🗡️ ${entry.full} ${entry.diff} — ${parsed.damage == null ? '딜컷' : '딜지분'} (${entry.players}인)`,
+    )
+    .addFields(gates.map((g) => gateField(entry, g, parsed)));
+
+  const notes = ['로아뷰 공개 딜컷', `${DATA_DATE} 확인`, '실제 MVP와 다를 수 있는 예상치'];
+  if (RAID_CUTS[entry.key].oneDerived) notes.push('1인분은 공개 표 계산식(딜러 6인 균등) 적용');
+  if (parsed.damage == null) notes.push('피해량을 넣으면 판정까지 나와요');
+  else notes.push('지분 소수 1자리·피해량 억 단위 반올림, 판정은 반올림 전 기준');
+  embed.setFooter({ text: notes.join(' · ') });
+
+  await interaction.reply({ embeds: [embed] });
+}
+
+export function execute(interaction) {
+  return run(interaction, 'share');
+}

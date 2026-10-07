@@ -1,0 +1,84 @@
+{
+  "description": "Wholly invented parser test data. No official API capture, real character, account, artwork, or game-balance claim. Node values are fictional.",
+  "records": [
+    {
+      "id": "baseline",
+      "name": "합성기본",
+      "total": 10,
+      "armory": {
+        "ArmoryProfile": {
+          "CharacterName": "합성기본",
+          "CharacterClassName": "검증",
+          "ItemAvgLevel": "1,000.00",
+          "Stats": [
+            {
+              "Type": "치명",
+              "Value": "100",
+              "Tooltip": [
+                "치명타 적중률이 <font color=\"#fff\">10%</font> 증가합니다."
+              ]
+            }
+          ]
+        },
+        "ArmoryEquipment": [],
+        "ArmoryEngraving": {
+          "ArkPassiveEffects": []
+        },
+        "ArkPassive": {
+          "Effects": []
+        },
+        "ArmorySkills": []
+      },
+      "expectedEmbed": {
+        "color": 16098851,
+        "title": "❙ 합성기본님의 치적 정보",
+        "description": "검증 (1,000.00)\n\n**총합: 10.00%**\n\n• 스탯: 10.00% (치명 100)",
+        "footer": {
+          "text": "파티 시너지는 제외"
+        }
+      }
+    },
+    {
+      "id": "blunt-thorn",
+      "name": "합성가시",
+      "total": 100,
+      "armory": {
+        "ArmoryProfile": {
+          "CharacterName": "합성가시",
+          "CharacterClassName": "검증",
+          "ItemAvgLevel": "1,000.00",
+          "Stats": [
+            {
+              "Type": "치명",
+              "Value": "100",
+              "Tooltip": [
+                "치명타 적중률이 <font color=\"#fff\">100%</font> 증가합니다."
+              ]
+            }
+          ]
+        },
+        "ArmoryEquipment": [],
+        "ArmoryEngraving": {
+          "ArkPassiveEffects": []
+        },
+        "ArkPassive": {
+          "Effects": [
+            {
+              "Description": "진화 5티어 뭉툭한 가시 Lv.2",
+              "ToolTip": "{\"Element_002\":{\"type\":\"MultiTextBox\",\"value\":\"진화형 피해가 7.0% 증가합니다. 치명타가 발생할 확률이 최대 80.0% 로 제한됩니다. 공격 시, 초과한 모든 치명타가 발생할 확률의 50.0%가 진화형 피해로 전환됩니다. 이 노드에 의한 진화형 피해는 최대 30.0%까지 적용됩니다.\"}}"
+            }
+          ]
+        },
+        "ArmorySkills": []
+      },
+      "expectedEmbed": {
+        "color": 16098851,
+        "title": "❙ 합성가시님의 치적 정보",
+        "description": "검증 (1,000.00)\n\n**총합: 100.00%**\n\n• 스탯: 100.00% (치명 100)\n\n⚠️ 뭉툭한 가시 Lv.2 채용중 — 치적은 80.00%까지만 적용\n진화형 피해 +17.00% (기본 7.00% + 초과 치적 20.00% × 50% = 10.00%, 노드 상한 30.00%)",
+        "footer": {
+          "text": "파티 시너지는 제외"
+        }
+      }
+    }
+  ]
+}

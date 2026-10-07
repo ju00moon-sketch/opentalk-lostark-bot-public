@@ -1,0 +1,410 @@
+{
+  "description": "All bundled image files listed here were created from basic geometric shapes for this public source copy; no original project image was used. They are examples, not game artwork. Fonts are separately licensed under OFL-1.1.",
+  "images": [
+    {
+      "path": "docs/assets/daylight-lounge-768.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 500,
+      "license": "MIT",
+      "sha256": "e3ac4c156cb1039216286a012f80c6fabaf78ffad24ab6d468b6469c10dc8c2e"
+    },
+    {
+      "path": "docs/assets/daylight-lounge.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 500,
+      "license": "MIT",
+      "sha256": "c0cbe36c9c10d2b10b8145f068868e6ae623775fdbd772e78512b945b35a4417"
+    },
+    {
+      "path": "docs/assets/lounge-hero-768.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 500,
+      "license": "MIT",
+      "sha256": "ab051695f2475825210fde50595fb20d782650fb4a4d961abd4d482c2e673c49"
+    },
+    {
+      "path": "docs/assets/lounge-hero.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 500,
+      "license": "MIT",
+      "sha256": "c02dfb19640751c2af5a48bbf35b9170a73a91956d6d54abde5a8f550fbbd50b"
+    },
+    {
+      "path": "docs/assets/pogeun-sprout-logo.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "042af2e62801470d2a1daf41fe78d1d13714b0895511c971fa3f64c3eb046817"
+    },
+    {
+      "path": "docs/assets/realm-mark.svg",
+      "kind": "original geometric SVG example",
+      "license": "MIT"
+    },
+    {
+      "path": "docs/assets/realm-panorama.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 500,
+      "license": "MIT",
+      "sha256": "e75616afa772b3ec120df2cc0080ce83b7d9428e12cfd7f2e4e6a534b9445ebf"
+    },
+    {
+      "path": "docs/assets/tiers/bronze-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "d59296bb0a2a651f3df72917845f46bc8e39fca233cc8486f6c03735ae9e7ccc"
+    },
+    {
+      "path": "docs/assets/tiers/bronze-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "8d2235bb90c8918b9469b1deedaa3889d6d6f5c15dbc6242224def278e0c91f5"
+    },
+    {
+      "path": "docs/assets/tiers/bronze-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "83f3bc35a7806a70b5477cf0790f59da9030a51cf7d44c6d47c6c33004fb3d33"
+    },
+    {
+      "path": "docs/assets/tiers/bronze.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "9aca2eec450eba96c907b18f08d7b4ac2a8660b1765fc1656182b1c921a7c1ad"
+    },
+    {
+      "path": "docs/assets/tiers/challenger-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "aade76662cae5ac482e514f4c4f666267c3725696216ae2a14b7008a288ccf33"
+    },
+    {
+      "path": "docs/assets/tiers/challenger-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "3efd88ba1fe2415cf65c45569fd1d1e17eaecfc12ffcee91de267b1f7f60a0eb"
+    },
+    {
+      "path": "docs/assets/tiers/challenger-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "0b43ce832657ea3786e09b2787ce47463a7e44ba0dc96fed4ca84fc60a67a51c"
+    },
+    {
+      "path": "docs/assets/tiers/challenger.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "853e741546fe577f19d911d0e32a201f28d8421479cac217d0a41550f86e449e"
+    },
+    {
+      "path": "docs/assets/tiers/diamond-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "235a869f4cb0150c38a84d063be3518373c79b2ab10a4f61dade935ef922d80b"
+    },
+    {
+      "path": "docs/assets/tiers/diamond-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "378844cf4bf9914458f8fa98f72408bdecd8241da96e4c969bff77d30f0706a9"
+    },
+    {
+      "path": "docs/assets/tiers/diamond-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "b689eb89de5fd2eb0f6dc5a9d33a588f4781a5c0e98bceb0ceb6981bad2e28d7"
+    },
+    {
+      "path": "docs/assets/tiers/diamond.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "5c8a5e9288db9bbc1d84b90e0d967e0c22a35213ff0dd5fd7759456b4649ddc8"
+    },
+    {
+      "path": "docs/assets/tiers/dream-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "208e0567087dc160013fa1928933ae718e8759fbf774fb731fa57b7eadff31c3"
+    },
+    {
+      "path": "docs/assets/tiers/dream-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "433ab3bd5d0107a19da9202454f57c1e6b8e1569964dfc400a135fdf8e046622"
+    },
+    {
+      "path": "docs/assets/tiers/dream-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "d8744b6a11f51eeabee6fff76da933c40fbfddd19823d8ff2d13f02993d3fcf6"
+    },
+    {
+      "path": "docs/assets/tiers/dream.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "4dac22a55530b34d995ec3cb5d47c80a90cae4d5e414ecd1075ef4e0ab8fa2cb"
+    },
+    {
+      "path": "docs/assets/tiers/esther-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "8591a083ca16ed93907f56c521931da8820943dea88655fb5c724a541448839e"
+    },
+    {
+      "path": "docs/assets/tiers/esther-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "196f33a420c5a72cd877ece50c35d859a0a36f31108dd097636c80ef1004b5d6"
+    },
+    {
+      "path": "docs/assets/tiers/esther-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "fd9eedb44a8147e8389389ac2cd86a48d4132a97168995b0e59d578caa46c7fa"
+    },
+    {
+      "path": "docs/assets/tiers/esther.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "02a3d29cd14f4fdf3c5aa9674aa62c54b67401dd6a65ccd479bb9c6ba5a015a7"
+    },
+    {
+      "path": "docs/assets/tiers/gold-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "b3fdb2a7d20a566d46137dccb3bd8bb7465e1a1592fdb9d9c7f555fb2b3a6346"
+    },
+    {
+      "path": "docs/assets/tiers/gold-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "bfe8bd5fb057fa91b2511d1cb38fb445820240a1458e265368286cbcfbe57d5a"
+    },
+    {
+      "path": "docs/assets/tiers/gold-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "d3b5e39391d83e3d93344534e2cda15032d67023608ea8d240d0f232f8d38d3d"
+    },
+    {
+      "path": "docs/assets/tiers/gold.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "0b9b8c0bdfa0a18dee6e333ed00a931af1c1bdbf0af26d75750a12077636751a"
+    },
+    {
+      "path": "docs/assets/tiers/grandmaster-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "1cbcfd4ec200acc81de0b96167d4da078b549c36422be7e5964a79de57df4a58"
+    },
+    {
+      "path": "docs/assets/tiers/grandmaster-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "abea9413d6d97507815457619579df03756f3f9e6c1333733998e2627733f8e7"
+    },
+    {
+      "path": "docs/assets/tiers/grandmaster-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "748902b4cb799c043909817b4a9f7548cc25d18a80eaf358c8dd35c93edcfea4"
+    },
+    {
+      "path": "docs/assets/tiers/grandmaster.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "e4a421ffb6062a1906424cfaf4c3e78d143cb356f1be6d7c2e2c7519cad50103"
+    },
+    {
+      "path": "docs/assets/tiers/iron-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "4992abe9a7205f9660852c7fd162fee14bcba0a1c4987a7ca140f0fecb955606"
+    },
+    {
+      "path": "docs/assets/tiers/iron-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "b99d2e9d552fbdcdb93e1774e2cd2120a5dca90b79cb8f3807a18106367089c0"
+    },
+    {
+      "path": "docs/assets/tiers/iron-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "f97d99b761a586b44a02aaf8fe624e53669f51f81a01b435d599c20a491ae652"
+    },
+    {
+      "path": "docs/assets/tiers/iron.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "391d9d29c324f0a02a65bd3e7e25e632de00b06a387793cd8e16eaec948ffbb2"
+    },
+    {
+      "path": "docs/assets/tiers/master-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "f4c98c352d9518f56b62ebb4eaff0c6ab13071c82cdfa9e007e6607dfefed66c"
+    },
+    {
+      "path": "docs/assets/tiers/master-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "092bdd9260d5c63ed9a8d51dc1d4988ce23ece5d298a45b66a49ace9d048dc1c"
+    },
+    {
+      "path": "docs/assets/tiers/master-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "ed008ad7d958f676de3d663f6b7ae96895078eebe740ce35fc6de5da8f999098"
+    },
+    {
+      "path": "docs/assets/tiers/master.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "176c067af5493951370b5384f0b6af873a25c94e2c1fd5239442faf909f82f2b"
+    },
+    {
+      "path": "docs/assets/tiers/platinum-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "0389cae76306b324e55a14adca775f121530b0be8595c95976eaccc61732bab8"
+    },
+    {
+      "path": "docs/assets/tiers/platinum-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "529bd76b80e73987718aab93b9d600997552383526a01494995ede479aa21ca3"
+    },
+    {
+      "path": "docs/assets/tiers/platinum-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "a967c72daf19f5fdf50a009c52e7222cc7dc0c28236f2269563d603b17eceba8"
+    },
+    {
+      "path": "docs/assets/tiers/platinum.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "bafe66617dd144cc06553572990d7736ac0e12dafe623ffca9570634eace6e66"
+    },
+    {
+      "path": "docs/assets/tiers/silver-card.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 1200,
+      "height": 630,
+      "license": "MIT",
+      "sha256": "b5f57b500cd55fa0e8b8f448d3fef36e2bcde27f7e89b5009e72c4a6174d4b3a"
+    },
+    {
+      "path": "docs/assets/tiers/silver-name.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 960,
+      "height": 384,
+      "license": "MIT",
+      "sha256": "440a3b276ef03c01761f264e3a3629e73741bfa6e362fb9455375cde6fd8d533"
+    },
+    {
+      "path": "docs/assets/tiers/silver-sm.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 128,
+      "height": 128,
+      "license": "MIT",
+      "sha256": "042af2e62801470d2a1daf41fe78d1d13714b0895511c971fa3f64c3eb046817"
+    },
+    {
+      "path": "docs/assets/tiers/silver.png",
+      "kind": "original geometric PNG example with SAMPLE label",
+      "width": 512,
+      "height": 512,
+      "license": "MIT",
+      "sha256": "47beeb9ceaf313f9d580232f71a60a3d941ec64bbd824e2bd571a2b670d30636"
+    }
+  ]
+}

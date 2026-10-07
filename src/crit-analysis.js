@@ -1,0 +1,313 @@
+import { parseTooltip, findPartBox, parseBracelet, stripTags } from './tooltip.js';
+import { findIdentityCrits } from './data/identity-crit.js';
+
+// "치명타 적중률 +1.55%", "치명타 적중률이 추가로 20.00% 증가"를 잡는다. "치명타 발생 확률"도 같은 뜻으로 보되,
+// "치명타 발생 확률 1.0%당 피해량이 …"(발키리 성검 개방·브레이커 치명적인 주먹)처럼 치적을 피해로 바꾸는 환산 효과는 "%당"이라 뺀다.
+const CRIT = /치명타 (?:적중률|발생 확률)[이가]?\s*(?:추가로\s*)?\+?\s*([\d.]+)\s*%(?!당)/g;
+// "치명타 적중률이 100%로 적용된다"(선수필승)처럼 더하는 게 아니라 값을 대체하는 표현.
+const REPLACEMENT = /^\s*(?:으?로)\s*적용/;
+
+// 치적을 언급한 구절만 잘라 낸다 — 수치 하나로 줄이기 어려운 효과는 문장을 그대로 보여준다.
+// 소수점(20.00%)에서 끊기지 않도록 숫자 사이의 마침표는 문장 끝으로 보지 않는다.
+function clauseAt(text, index) {
+  const rest = text.slice(index);
+  const end = rest.search(/,|(?<!\d)\.|\.(?!\d)|하고|하며/);
+  return (end === -1 ? rest : rest.slice(0, end)).trim();
+}
+
+// 중첩마다 쌓이는 효과("치명타 적중률 +1.4% … 최대 5중첩")는 풀스택 기준으로 합산한다.
+// 반면 "최대 중첩 도달 시 20% 증가"처럼 이미 최대치를 적어 둔 건 중첩 표기가
+// 치적 앞에 오므로 그대로 쓴다.
+const PER_STACK = /최대\s*(\d+)\s*중첩/;
+
+// 한 덩어리의 설명에서 치적을 뽑는다. [{ value, additive, stacks, clause }]
+function readCrit(text) {
+  const source = String(text ?? '');
+  const out = [];
+  for (const m of source.matchAll(CRIT)) {
+    const after = source.slice(m.index + m[0].length);
+    const stacks = Number(PER_STACK.exec(after)?.[1] ?? 1);
+    out.push({
+      index: m.index,
+      value: Number(m[1]),
+      additive: !REPLACEMENT.test(after),
+      stacks,
+      clause: clauseAt(source, m.index),
+    });
+  }
+  return out;
+}
+
+// 백어택 성공 시 치명타 적중률 10% 증가 — 장비와 무관한 게임 기본 수치.
+// 기습의 대가(백어택 빌드)를 낀 캐릭터에만 더한다 — 프론트·헤드 빌드는 백어택을 노리지 않으니 (사용자 요청 2026-09-04).
+const BACK_ATTACK_CRIT = 10;
+const BACK_ATTACK_ENGRAVING = '기습의 대가';
+
+
+// "대상이 자신 및 파티원에게 받는 치명타 저항률이 12.0초간 10.0% 감소" (급소 노출 트라이포드) — 사실상 자신·파티 치적 +N%인 시너지.
+const CRIT_RESIST = /치명타 저항률[이가]?\s*(?:[\d.]+\s*초간\s*)?([\d.]+)\s*%\s*감소/g;
+// "기본 이동 속도 증가량 %의 30.0% 만큼 치명타 적중률이 증가" (기상술사 기민함) — 이속 증가량은 전투 중 상한 40%로 본다.
+const DERIVED_CRIT = /(이동 속도|공격 속도) 증가량\s*%의\s*([\d.]+)\s*%\s*만큼 치명타 적중률/g;
+const MOVE_SPEED_CAP = 40;
+
+const ACC_TYPES = ['목걸이', '귀걸이', '반지'];
+
+// 장비(악세 연마 · 팔찌 옵션)에서 치적을 모은다.
+function fromEquipment(equipment) {
+  const found = [];
+  for (const item of equipment ?? []) {
+    const tooltip = parseTooltip(item.Tooltip);
+    let lines = [];
+    if (ACC_TYPES.includes(item.Type)) {
+      lines = findPartBox(tooltip, '연마 효과') ?? [];
+    } else if (item.Type === '팔찌') {
+      const { stats, effects } = parseBracelet(tooltip);
+      lines = [...stats.map((s) => `${s.name} ${s.value}`), ...effects];
+    } else {
+      continue;
+    }
+    for (const line of lines) {
+      for (const hit of readCrit(line)) {
+        found.push({ source: item.Type, detail: line, ...hit });
+      }
+    }
+  }
+  return found;
+}
+
+// 각인 효과에서 치적을 모은다 (아드레날린 등). Lv.0은 효과가 없으므로 건너뛴다.
+function fromEngravings(engraving) {
+  const found = [];
+  for (const e of engraving?.ArkPassiveEffects ?? []) {
+    if (!e.Level) continue;
+    const text = stripTags(e.Description);
+    for (const hit of readCrit(text)) {
+      found.push({ source: '각인', detail: `${e.Name} Lv.${e.Level}`, ...hit });
+    }
+  }
+  return found;
+}
+
+// 노드 효과에 붙은 발동 조건·적용 범위를 찾는다. 계열(깨달음이냐 진화냐)이 아니라 문장으로 가른다 —
+// 같은 깨달음이어도 가디언나이트 깨어나는 힘("치명타 적중률이 20.0% 증가한다")은 조건이 없어 상시 합산이고,
+// "샷건 스탠스로 변경 시"(피스메이커) · "광기 상태에서는"(광기) · "혼돈 게이지가 가득차면"(피냄새) ·
+// "충격 스킬의"(날카로운 타격)처럼 조건이나 적용 범위가 붙으면 "추가 치명타 확률"로 뺀다 (검토 지적 2026-09-05).
+// 각인·악세는 조건부 표기가 기본이라(아드레날린 "최대 중첩 도달 시 … 20.00% 증가") 예전처럼 그대로 합산한다.
+const NODE_CONDITIONS = [
+  /\s시[\s,]/,                                          // "스탠스 변경 시 "
+  /(?:사용|적중|변경|발동|시전|공격|타격|처치|진입)\s*시/,  // 붙여 쓴 "사용시"까지
+  /상태(?:에서|일|가|로|면|이)/,                           // "광기 상태에서는"
+  /(?:되|하|차|지|이|으|았|었)면[\s,]/,                    // "혼돈 게이지가 가득차면 "
+  /\s때[\s,]/,                                          // "최대 중첩일 때 "
+  /중첩/,
+];
+// "충격 스킬의 치명타 적중률"처럼 특정 스킬로 좁힌 효과. "모든 스킬"은 범위 제한이 아니다.
+const SKILL_SCOPE = /([가-힣]+)\s*스킬(?:의|에|만)/;
+const ALL_SKILLS = new Set(['모든', '전체']);
+
+// 판정은 치적이 실린 문장에서 치적 앞부분만 본다 — 진화 달인처럼 조건이 앞 문장에 있고 정작 치적 줄은
+// "달인 : 치명타 적중률 +1.4%"인 효과를 조건부로 오판하지 않기 위해서다.
+// 소수점("20.0%")에서 문장이 끊기지 않도록 마침표 뒤에 공백이 오는 자리만 경계로 삼는다.
+function clauseBefore(text, index) {
+  const head = text.slice(0, index);
+  let start = 0;
+  for (const m of head.matchAll(/\.\s/g)) start = m.index + m[0].length;
+  return head.slice(start);
+}
+
+function isConditionalCrit(text, index) {
+  const before = clauseBefore(text, index);
+  if (NODE_CONDITIONS.some((re) => re.test(before))) return true;
+  const scope = SKILL_SCOPE.exec(before);
+  return scope !== null && !ALL_SKILLS.has(scope[1]);
+}
+
+// 현재 효과 상자만 읽어 다른 상자의 다음 레벨 수치가 섞이지 않게 한다.
+function readBluntThorn(description, tooltip) {
+  const node = /^진화\s+\d+티어\s+뭉툭한 가시\s+Lv\.([1-9]\d*)$/.exec(description);
+  if (!node) return null;
+  const box = tooltip?.Element_002;
+  const text = box?.type === 'MultiTextBox' && typeof box.value === 'string'
+    ? stripTags(box.value).replace(/\s+/g, ' ') : '';
+  const patterns = [
+    /진화형 피해가\s*(\d+(?:\.\d+)?)\s*%\s*증가/,
+    /치명타가 발생할 확률이 최대\s*(\d+(?:\.\d+)?)\s*%/,
+    /초과한 모든 치명타가 발생할 확률의\s*(\d+(?:\.\d+)?)\s*%\s*가 진화형 피해로 전환/,
+    /이 노드에 의한 진화형 피해는 최대\s*(\d+(?:\.\d+)?)\s*%/,
+  ];
+  const values = patterns.map((pattern) => {
+    const match = pattern.exec(text);
+    return match ? Number(match[1]) : NaN;
+  });
+  const [base, cap, rate, max] = values;
+  const valid = values.every((value) => Number.isFinite(value) && value >= 0)
+    && cap <= 100 && max >= base;
+  return { level: node[1], effect: valid ? { base, cap, rate, max } : null };
+}
+
+// 아크 패시브 노드에서 치적을 모은다. 출처는 계열(진화·깨달음·도약)로 묶는다.
+// 파생형("이속 증가량의 30% 만큼")은 합계에 못 넣으니 derived로 따로 돌려준다.
+function fromArkPassive(ark) {
+  const found = [];
+  const conditional = [];
+  const derived = [];
+  let bluntThorn = null;
+  for (const e of ark?.Effects ?? []) {
+    const tooltip = parseTooltip(e.ToolTip);
+    const text = Object.values(tooltip ?? {})
+      .filter((v) => v?.type === 'MultiTextBox')
+      .map((v) => stripTags(v.value).replace(/\|/g, ' '))
+      .join(' ');
+    const description = stripTags(e.Description);
+    bluntThorn ??= readBluntThorn(description, tooltip);
+    const category = /^(진화|깨달음|도약)/.exec(description)?.[1] ?? '아크패시브';
+    const nodeName = description.replace(/^(진화|깨달음|도약)\s*\d*티어\s*/, '');
+    for (const hit of readCrit(text)) {
+      const bucket = isConditionalCrit(text, hit.index) ? conditional : found;
+      bucket.push({ source: category, detail: nodeName, ...hit });
+    }
+    for (const m of text.matchAll(DERIVED_CRIT)) {
+      const ratio = Number(m[2]);
+      derived.push({
+        detail: `${nodeName} (${m[1] === '이동 속도' ? '이속' : '공속'} ${MOVE_SPEED_CAP}% × ${ratio}%)`,
+        value: MOVE_SPEED_CAP * ratio / 100,
+      });
+    }
+  }
+  return { found, conditional, derived, bluntThorn };
+}
+
+// 채용한 스킬 본문·트라이포드에서 두 가지를 모은다 — 해당 스킬에만 붙는 값이라 합계에 넣지 않는다.
+//   clauses : 스킬 자체 치적("급소 타격", 창술사 청룡진 연가공법 같은 자버프) — 중첩·지속시간이 얽혀 수치 대신 구절을 그대로
+//   synergy : "급소 노출"처럼 대상의 치명타 저항률을 낮추는 것 — 자신·파티 치적 +N%인 시너지라 수치로
+// 스킬 본문은 툴팁의 설명 상자(MultiTextBox)만 본다 — 같은 툴팁 안의 트라이포드 목록(TripodSkillCustom)은 안 고른 것까지 들어 있어서.
+const SKILL_TEXT_TYPES = new Set(['MultiTextBox', 'SingleTextBox']);
+
+function fromSkills(skills) {
+  const clauses = [];
+  const synergy = [];
+  const scan = (label, text) => {
+    for (const m of text.matchAll(CRIT_RESIST)) synergy.push({ detail: label, value: Number(m[1]) });
+    const index = text.search(/치명타 (?:적중률|발생 확률)/);
+    if (index !== -1) clauses.push({ detail: label, clause: clauseAt(text, index) });
+  };
+  for (const skill of skills ?? []) {
+    if ((skill.Level ?? 1) <= 1) continue; // 배우지 않은 스킬은 건너뛴다
+    const body = Object.values(parseTooltip(skill.Tooltip))
+      .filter((v) => SKILL_TEXT_TYPES.has(v?.type) && typeof v.value === 'string')
+      .map((v) => stripTags(v.value))
+      .join(' ')
+      .replace(/\s+/g, ' ');
+    scan(skill.Name, body);
+    for (const tripod of skill.Tripods ?? []) {
+      if (!tripod.IsSelected) continue;
+      scan(`${skill.Name} · ${tripod.Name}`, stripTags(tripod.Tooltip).replace(/\s+/g, ' '));
+    }
+  }
+  return { clauses, synergy };
+}
+const MERGED_SOURCES = new Set(['목걸이', '귀걸이', '반지', '팔찌']);
+
+function groupSources(rows) {
+  const groups = new Map();
+  for (const row of rows) {
+    if (!groups.has(row.source)) groups.set(row.source, { source: row.source, value: 0, details: [] });
+    const group = groups.get(row.source);
+    group.value += row.value;
+    if (row.detail) {
+      const { source, ...detail } = row;
+      group.details.push(detail);
+    }
+  }
+  return [...groups.values()];
+}
+
+function calculateBluntThorn(node, total) {
+  if (!node) return null;
+  const result = { level: node.level, effect: node.effect, calculation: null };
+  if (!node.effect || !Number.isFinite(total)) return result;
+  const { base, cap, rate, max } = node.effect;
+  const excess = Math.max(0, total - cap);
+  const converted = excess * rate / 100;
+  const raw = base + converted;
+  if (!Number.isFinite(raw)) return result;
+  // 노드 상한은 기본과 전환을 합친 전체 효과에 적용한다.
+  result.calculation = { excess, converted, evolutionDamage: Math.min(raw, max), capped: raw >= max };
+  return result;
+}
+
+/**
+ * 공식 전투정보실 원본의 치적을 계산한다. I/O, 환경값, 명령·화면 렌더링에 의존하지 않는다.
+ * total은 조건부 효과와 파티 시너지를 제외하며 계산 중에는 반올림하지 않는다.
+ * sources[].details는 출처별 세부·풀스택 근거(baseValue, stacks)를 보존한다.
+ * conditional은 identities, nodes, derived, synergies, replacements, skills로 구분한다.
+ * nodes의 value는 중첩 전 수치, totalValue는 풀스택 수치다. 대체 효과는 합산하지 않는다.
+ * bluntThorn은 미채용 시 null, 해석 불가 시 effect/calculation이 null이다.
+ */
+export function analyzeCrit(armory) {
+  // 치명 특성이 주는 치적은 API 툴팁에 이미 환산돼 있다.
+  const critStat = (armory.ArmoryProfile.Stats ?? []).find((s) => s.Type === '치명');
+  const statMatch = /치명타 적중률이 <font[^>]*>([\d.]+)%/.exec(String(critStat?.Tooltip ?? ''));
+  const statCrit = statMatch ? Number(statMatch[1]) : 0;
+
+  const ark = fromArkPassive(armory.ArkPassive);
+  const all = [
+    ...fromEquipment(armory.ArmoryEquipment),
+    ...fromEngravings(armory.ArmoryEngraving),
+    ...ark.found,
+  ];
+  // 값을 대체하는 표현(선수필승)만 합계에서 빼고, 중첩형은 풀스택으로 환산해 더한다.
+  const counted = all.filter((h) => h.additive);
+  const extras = all.filter((h) => !h.additive);
+
+  // 부위별 옵션(반지 두 개 등)은 한 줄로 합치고, 각인·노드는 이름을 그대로 남긴다.
+  const rows = [{ source: '스탯', detail: `치명 ${critStat?.Value ?? '-'}`, value: statCrit }];
+  const mergedIndex = new Map();
+  for (const hit of counted) {
+    const value = hit.value * hit.stacks;
+    if (MERGED_SOURCES.has(hit.source)) {
+      const found = mergedIndex.get(hit.source);
+      if (found) {
+        found.value += value;
+        continue;
+      }
+      const row = { source: hit.source, value };
+      mergedIndex.set(hit.source, row);
+      rows.push(row);
+      continue;
+    }
+    rows.push({ source: hit.source, detail: hit.detail, value, baseValue: hit.value, stacks: hit.stacks });
+  }
+  // 백어택은 기습의 대가를 낀 캐릭터(백어택 빌드)에만 더한다.
+  const backAttack = (armory.ArmoryEngraving?.ArkPassiveEffects ?? [])
+    .some((e) => e.Name === BACK_ATTACK_ENGRAVING && e.Level > 0);
+  if (backAttack) rows.push({ source: '백 어택', value: BACK_ATTACK_CRIT });
+
+  const total = rows.reduce((sum, r) => sum + r.value, 0);
+
+  // 아이덴티티(Z키) 치적은 API에 없어서 직업별 표에서 가져온다.
+  // 같은 노드의 툴팁에서 이미 수치를 읽었다면(패치로 툴팁에 실린 경우) 표 항목은 빼서 두 번 세지 않는다.
+  const nodeNames = (armory.ArkPassive?.Effects ?? []).map((e) => stripTags(e.Description));
+  // 합계에 넣은 노드든 조건부로 뺀 노드든, 툴팁에서 수치를 이미 읽었으면 표 항목은 건너뛴다.
+  const parsedNodes = new Set(
+    [...ark.found, ...ark.conditional].map((h) => h.detail.replace(/\s*Lv\.\d+$/, '')),
+  );
+  const identities = findIdentityCrits(armory.ArmoryProfile.CharacterClassName, nodeNames)
+    .filter((i) => !i.node || ![...parsedNodes].some((n) => n.includes(i.node)));
+  const skills = fromSkills(armory.ArmorySkills);
+
+  return {
+    total,
+    sources: groupSources(rows),
+    conditional: {
+      identities: identities.map(({ label, crit, note }) => ({ label, crit, note })),
+      nodes: ark.conditional.map(({ source, detail, additive, value, stacks, clause }) =>
+        ({ source, detail, additive, value, stacks, totalValue: value * stacks, clause })),
+      derived: ark.derived,
+      synergies: skills.synergy,
+      replacements: extras.map(({ detail, clause }) => ({ detail, clause })),
+      skills: skills.clauses,
+    },
+    bluntThorn: calculateBluntThorn(ark.bluntThorn, total),
+  };
+}
